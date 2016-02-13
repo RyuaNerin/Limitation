@@ -51,7 +51,7 @@
     <Reference Include="Jint, Version=2.6.0.0, Culture=neutral, PublicKeyToken=2e92ba9c8d81157f, processorArchitecture=MSIL">
       <HintPath>Library\Jint.2.7.1\Jint.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro, Version=1.2.0.0, Culture=neutral, PublicKeyToken=df6e08c7cdc2292f, processorArchitecture=MSIL">
+    <Reference Include="MahApps.Metro">
       <HintPath>Library\MahApps.Metro-1.1.2\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -59,7 +59,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Windows.Interactivity">
       <HintPath>Library\MahApps.Metro-1.1.2\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xaml">
@@ -87,12 +87,29 @@
     <Compile Include="Setting\Settings.cs" />
     <Compile Include="Setting\Objects\Proxy.cs" />
     <Compile Include="Setting\Objects\Window.cs" />
+    <Compile Include="Twitter\Model\Streaming\Events\FavoriteEvent.cs" />
+    <Compile Include="Twitter\Model\Streaming\Events\UnBlockEvent.cs" />
+    <Compile Include="Twitter\Model\Streaming\Events\BlockEvent.cs" />
+    <Compile Include="Twitter\Model\Streaming\Events\UserDeauthorizesStreamEvent.cs" />
+    <Compile Include="Twitter\Model\Streaming\Events\UserUpdateEvents.cs" />
+    <Compile Include="Twitter\Model\Streaming\FriendsEvent.cs" />
+    <Compile Include="Twitter\Model\Streaming\EventsBase.cs" />
+    <Compile Include="Twitter\Model\Streaming\WarningEvent.cs" />
+    <Compile Include="Twitter\Model\Streaming\DisconnectEvent.cs" />
+    <Compile Include="Twitter\Model\Streaming\UserWithheldEvent.cs" />
+    <Compile Include="Twitter\Model\Streaming\StatusWitheldEvent.cs" />
+    <Compile Include="Twitter\Model\Streaming\LimitEvent.cs" />
+    <Compile Include="Twitter\Model\Streaming\ScrubGeoEvent.cs" />
+    <Compile Include="Twitter\TwStreaming.cs" />
+    <Compile Include="Twitter\Model\Streaming\DeleteEvent.cs" />
     <Compile Include="Twitter\OAuth\OAuth.cs" />
     <Compile Include="Twitter\TimeLine\HomeTimeLine.cs" />
-    <Compile Include="Twitter\TwModel.cs" />
+    <Compile Include="Twitter\Model\BaseModel.cs" />
     <Compile Include="Twitter\Model\Status.cs" />
     <Compile Include="Twitter\Model\User.cs" />
+    <Compile Include="Twitter\Model\Streaming\Delegates.cs" />
     <Compile Include="Twitter\TwTimeLine.cs" />
+    <Compile Include="Twitter\Utilities.cs" />
     <Compile Include="Uncommit\TwitterToken.cs" />
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

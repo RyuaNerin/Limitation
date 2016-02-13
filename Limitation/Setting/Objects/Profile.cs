@@ -35,5 +35,14 @@ namespace Limitation.Setting.Objects
                 return this.m_oauth ?? (this.m_oauth = new OAuth(App.AppToken, App.AppSecret));
             }
         }
+
+        private TwStreaming m_streaming;
+        public TwStreaming Streaming
+        {
+            get
+            {
+                return this.m_streaming ?? (this.m_streaming = new TwStreaming(this));
+            }
+        }
     }
 }

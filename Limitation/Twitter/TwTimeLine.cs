@@ -9,10 +9,11 @@ using System.Collections.ObjectModel;
 using Limitation.Twitter.Model;
 using System.Threading;
 using System.Net;
+using Limitation.Setting.Objects;
 
 namespace Limitation.Twitter
 {
-    internal enum TimeLineType
+    internal enum TimeLineTypes
     {
         Home,
         Mention,
@@ -25,12 +26,13 @@ namespace Limitation.Twitter
         Search
     }
 
-    internal abstract class TwTimeLine : IDisposable
+    internal abstract class TwTimeLine : ObservableCollection<Status>
     {
-        public TwTimeLine(TimeLineType type)
+        public TwTimeLine(Profile profile)
         {
             this.m_dispatcher = App.Current.Dispatcher;
-            this.TimeLineType = type;
+
+            this.Profile = profile;
         }
 
         private bool m_disposed = false;
@@ -46,24 +48,24 @@ namespace Limitation.Twitter
 
             if (disposing)
             {
-                this.m_cancel.Cancel();
-                this.m_cancel.Dispose();
+
             }
         }
 
-        private Task m_streaming;
-        private CancellationTokenSource m_cancel;
         private readonly Dispatcher m_dispatcher;
 
-        public TimeLineType TimeLineType { get; private set; }
+        public virtual TimeLineTypes TimeLineType { get; }
+        public Profile Profile { get; private set; }
+        public string Name { get; set; }
 
-        public void Connect()
+        private void Recieve(Status status)
         {
-            this.m_cancel = new CancellationTokenSource();
-            this.m_streaming = Task.Run(new Action(Streaming), this.m_cancel.Token);
+
         }
 
-        public virtual void Streaming()
-        { }
+        protected virtual bool Filter(Status status)
+        {
+            return true;
+        }
     }
 }

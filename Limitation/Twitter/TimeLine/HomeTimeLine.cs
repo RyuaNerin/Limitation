@@ -8,11 +8,8 @@ using Limitation.Twitter.Model;
 
 namespace Limitation.Twitter.TimeLine
 {
-    internal class HomeTimeLine : ObservableCollection<Status>
+    internal class HomeTimeLine
     {
-        public virtual void Streaming()
-        {
-            var req = 
-        }
+
     }
 }

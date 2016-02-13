@@ -4,10 +4,9 @@ using System.Runtime.Serialization;
 
 namespace Limitation.Twitter.Model
 {
-    [Serializable]
     [DataContract]
 	[DebuggerDisplay("User {Id} - @{ScreenName}")]
-	internal class User : TwModel<User>
+	internal class User : BaseModel<User>
     {
         private string m_screenname;
         private string m_name;

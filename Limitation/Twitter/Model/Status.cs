@@ -4,10 +4,9 @@ using System.Runtime.Serialization;
 
 namespace Limitation.Twitter.Model
 {
-    [Serializable]
     [DataContract]
 	[DebuggerDisplay("Status {Id} - @{User.ScreenName}: {Text}")]
-	internal class Status : TwModel<Status>
+	internal class Status : BaseModel<Status>
     {
         [DataMember(Name = "id")]
         public override long Id { get; set; }
@@ -25,7 +24,7 @@ namespace Limitation.Twitter.Model
         public User Sender { get; set; }
 
         [DataMember(Name = "created_at")]
-        public string CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         [DataMember(Name = "entities")]
         public StatusEntities Entities { get; set; }
