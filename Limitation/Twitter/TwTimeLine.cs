@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
-using System.Windows.Threading;
 using System.Collections.ObjectModel;
-using Limitation.Twitter.Model;
-using System.Threading;
-using System.Net;
+using System.Windows.Threading;
 using Limitation.Setting.Objects;
+using Limitation.Twitter.Model;
+using Limitation.Twitter.Objects;
 
 namespace Limitation.Twitter
 {
@@ -26,41 +20,63 @@ namespace Limitation.Twitter
         Search
     }
 
-    internal abstract class TwTimeLine : ObservableCollection<Status>
+    internal abstract class TwTimeLine : SortedObservableCollection<Status>
     {
         public TwTimeLine(Profile profile)
         {
             this.m_dispatcher = App.Current.Dispatcher;
-
             this.Profile = profile;
+
+            this.AttachStream();
+        }
+        ~TwTimeLine()
+        {
+            this.Dispose(false);
         }
 
         private bool m_disposed = false;
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
-        protected void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (this.m_disposed) return;
             this.m_disposed = true;
 
             if (disposing)
             {
-
+                this.DeattachStream();
             }
         }
 
         private readonly Dispatcher m_dispatcher;
 
-        public virtual TimeLineTypes TimeLineType { get; }
+        public abstract TimeLineTypes TimeLineType { get; }
         public Profile Profile { get; private set; }
         public string Name { get; set; }
 
-        private void Recieve(Status status)
+        public long MaxId { get; private set; }
+
+        public void GetMore()
         {
 
+        }
+
+        protected virtual void AttachStream()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual void DeattachStream()
+        {
+            throw new NotImplementedException();
+        }
+
+        private new void Add(Status status)
+        {
+            this.m_dispatcher.Invoke(new Action<Status>(base.Add), status);
         }
 
         protected virtual bool Filter(Status status)

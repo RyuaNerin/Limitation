@@ -5,13 +5,13 @@ namespace Limitation.Twitter.Model.Streaming
 {
     [DataContract]
 	[DebuggerDisplay("user_withheld user_id={UserWithheld.UserId}")]
-    internal class UserWithheldEvent
+    internal class STUserWithheld
     {
         [DataMember(Name = "user_withheld")]
-        public UserWithheld UserWithheld { get; set; }
+        public UserWithheldObject UserWithheld { get; set; }
                     
         [DataContract]
-        public class UserWithheld
+        public class UserWithheldObject
         {
             [DataMember(Name = "user_id")]
             public long UserId { get; set; }

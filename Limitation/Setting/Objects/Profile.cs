@@ -1,4 +1,5 @@
-﻿using Limitation.Twitter.OAuth;
+﻿using Limitation.Twitter;
+using Limitation.Twitter.OAuth;
 
 namespace Limitation.Setting.Objects
 {
@@ -9,6 +10,9 @@ namespace Limitation.Setting.Objects
 
         [SettingAttr]
         public string UserSecret { get; set; }
+
+        [SettingAttr]
+        public string Filter { get; set; }
 
         public int m_userid;
         public int UserId

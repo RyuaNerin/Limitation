@@ -4,10 +4,17 @@ using System.Threading.Tasks;
 using Limitation.Setting.Objects;
 using Limitation.Twitter.Model.Streaming;
 
-namespace Limitation.Setting
+namespace Limitation.Twitter
 {
-    internal sealed class TwStreaming
+    internal delegate void StreamingConnected(TwStreaming sender);
+    internal delegate void StreamingError(TwStreaming sender, WebException Exception);
+    internal delegate void StreamingDisconnected(TwStreaming sender);
+
+    internal class TwStreaming
     {
+        // All User | All Replies | No Followings
+        private const string StreamingUri = "https://userstream.twitter.com/1.1/user.json?with=user&replies=all&stringify_friend_ids=false";
+
         public TwStreaming(Profile profile)
         {
             this.Profile = profile;
@@ -18,7 +25,6 @@ namespace Limitation.Setting
         public event StreamingConnected OnConnected;
         public event StreamingError OnError;
         public event StreamingDisconnected OnDisconnected;
-        public event StreamingStatusReceived OnStatusReceived;
 
         public Profile Profile { get; private set; }
 
@@ -28,7 +34,7 @@ namespace Limitation.Setting
 
         public void ConnectStreaming()
         {
-            this.m_request = this.Profile.OAuth.MakeRequest("GET", this.GetUrl()) as HttpWebRequest;
+            this.m_request = this.Profile.OAuth.CreateWebRequest("GET", TwStreaming.StreamingUri) as HttpWebRequest;
             this.m_task = Task.Factory.StartNew(this.Streaming);
         }
 
@@ -48,11 +54,6 @@ namespace Limitation.Setting
             }
         }
 
-        protected virtual string GetUrl()
-        {
-            return null;
-        }
-
         private void Streaming()
         {
             try
@@ -64,10 +65,10 @@ namespace Limitation.Setting
                     if (this.OnConnected != null) this.OnConnected.Invoke(this);
 
                     string line;
-                    while (true)
+                    while ((line = reader.ReadLine()) != null)
                     {
-                        line = reader.ReadLine();
                         if (string.IsNullOrWhiteSpace(line)) continue;
+
                     }
                 }
             }

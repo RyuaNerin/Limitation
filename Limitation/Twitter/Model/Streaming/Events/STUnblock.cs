@@ -3,10 +3,10 @@ using System.Runtime.Serialization;
 
 namespace Limitation.Twitter.Model.Streaming
 {
-    // access_revoked
+    // unblock
     [DataContract]
-	[DebuggerDisplay("event event={Event}")]
-    internal class UnblockEvent : EventsBase
+	[DebuggerDisplay("unblock")]
+    internal class STUnblock : STEvents
     {
         [DataMember(Name = "source")]
         public User CurrentUser { get; set; }

@@ -5,13 +5,13 @@ namespace Limitation.Twitter.Model.Streaming
 {
     [DataContract]
 	[DebuggerDisplay("disconnect Code={Disconnect.Code}, StreamName={Disconnect.StreamName}, Reason={Disconnect.Reason}")]
-    internal class DisconnectEvent
+    internal class STDisconnect
     {
         [DataMember(Name = "disconnect")]
-        public Disconnect Disconnect { get; set; }
+        public DisconnectObject Disconnect { get; set; }
                     
         [DataContract]
-        public class Disconnect
+        public class DisconnectObject
         {
             [DataMember(Name = "code")]
             public DisconnectCodes Code { get; set; }
@@ -55,8 +55,8 @@ namespace Limitation.Twitter.Model.Streaming
             AdminLogout = 7,
             
             /// <summary>Reserved for internal use. Will not be delivered to external clients.</summary>
-            [EnumMember]
-            Unnamed = 8,
+            //[EnumMember]
+            //Unnamed = 8,
             
             /// <summary>The stream connected with a negative count parameter and was disconnected after all backfill was delivered.</summary>
             [EnumMember]

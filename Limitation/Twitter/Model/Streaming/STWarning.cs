@@ -5,13 +5,13 @@ namespace Limitation.Twitter.Model.Streaming
 {
     [DataContract]
 	[DebuggerDisplay("warning code={Delete.Id}, message={Delete.Message}, PersentFull={Warning.PercentFull}")]
-    internal class WarningEvent
+    internal class STWarning
     {
         [DataMember(Name = "warning")]
-        public Warning Warning { get; set; }
+        public WarningObject Warning { get; set; }
                     
         [DataContract]
-        public class Warning
+        public class WarningObject
         {
             [DataMember(Name = "code")]
             public string Code { get; set; }

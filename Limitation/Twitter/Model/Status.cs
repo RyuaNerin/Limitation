@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 
 namespace Limitation.Twitter.Model
 {
@@ -8,35 +9,97 @@ namespace Limitation.Twitter.Model
 	[DebuggerDisplay("Status {Id} - @{User.ScreenName}: {Text}")]
 	internal class Status : BaseModel<Status>
     {
-        [DataMember(Name = "id")]
-        public override long Id { get; set; }
-
-        [DataMember(Name = "text")]
-        public string Text { get; set; }
-
-        [DataMember(Name = "user")]
-        public User User { get; set; }
-
-        [DataMember(Name = "recipient")]
-        public User Recipient { get; set; }
-
-        [DataMember(Name = "sender")]
-        public User Sender { get; set; }
-
         [DataMember(Name = "created_at")]
         public DateTime CreatedAt { get; set; }
 
         [DataMember(Name = "entities")]
         public StatusEntities Entities { get; set; }
 
-        [DataMember(Name = "retweeted_status")]
-        public Status RetweetedStatus { get; set; }
+        [DataMember(Name = "favorite_count")]
+        public int FavoriteCount { get; set; }
 
+        private bool m_favorited;
         [DataMember(Name = "favorited")]
-        public bool Favorited { get; set; }
+        public bool Favorited
+        {
+            get { return m_favorited; }
+            set { m_favorited = value; OnPropertyChanged(); }
+        }
+        
+        /// <summary>
+        /// none, low, medium
+        /// </summary>
+        [DataMember(Name = "filter_level")]
+        public FilterLevels FilterLevel { get; set; }
+
+        [DataContract]
+        public enum FilterLevels
+        {
+            [EnumMember(Value = "none")]    None,
+            [EnumMember(Value = "low")]     Low,
+            [EnumMember(Value = "medium")]  Medium
+        }
+        
+        [DataMember(Name = "id")]
+        public override long Id { get; set; }
+
+        [DataMember(Name = "in_reply_to_screen_name")]
+        public string InReplyToScreenName { get; set; }
+
+        [DataMember(Name = "in_reply_to_status_id")]
+        public long InReplyToStatusId { get; set; }
+
+        [DataMember(Name = "in_reply_to_user_id")]
+        public long InReplyToUserId { get; set; }
+
+        [DataMember(Name = "possibly_sensitive")]
+        public bool PossiblySensitive { get; set; }
+
+        [DataMember(Name = "quoted_status_id")]
+        public long QuotedStatusId { get; set; }
+
+        [DataMember(Name = "quoted_status")]
+        public Status QuotedStatus { get; set; }
+
+        [DataMember(Name = "retweet_count")]
+        public int RetweetCount { get; set; }
 
         [DataMember(Name = "retweeted")]
         public bool Retweeted { get; set; }
+
+        [DataMember(Name = "retweeted_status")]
+        public Status RetweetedStatus { get; set; }
+
+        private static Regex m_sourceRegex = new Regex("^<a href=\"([^\"]+)\"(:? rel=\"\\\"nofollow\\\"\")?>(.+)<\\/a>$", RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+        private string m_source;
+        [DataMember(Name = "source")]
+        public string Source
+        {
+            get { return m_source; }
+            set
+            {
+                var m = m_sourceRegex.Match(value);
+                this.m_source = string.Intern(m.Groups[2].Value);
+                this.SourceUri = string.Intern(m.Groups[1].Value);
+                if (this.SourceUri.StartsWith("//")) this.SourceUri = "http:" + this.SourceUri;
+            }
+        }
+
+        public string SourceUri { get; set; }
+
+        [DataMember(Name = "text")]
+        public string Text { get; set; }
+    
+        [DataMember(Name = "user")]
+        public User User { get; set; }
+
+        //////////////////////////////////////////////////
+
+        [DataMember(Name = "recipient")]
+        public User Recipient { get; set; }
+
+        [DataMember(Name = "sender")]
+        public User Sender { get; set; }
 
         [DataMember(Name = "current_user_retweet")]
         public CurrentUserRetweet CurrentUserRetweet { get; set; }

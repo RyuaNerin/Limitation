@@ -6,12 +6,12 @@ namespace Limitation.Twitter.Model.Streaming
 {
     [DataContract]
 	[DebuggerDisplay("event event={Event}")]
-    internal class EventsBase
+    internal class STEvents
     {
         [DataMember(Name = "event")]
         public string Event { get; set; }
 
         [DataMember(Name = "created_at")]
-        public DateTime Event { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

@@ -3,18 +3,18 @@ using System.Runtime.Serialization;
 
 namespace Limitation.Twitter.Model.Streaming
 {
-    // access_revoked
+    // quoted_tweet
     [DataContract]
-	[DebuggerDisplay("event event={Event}")]
-    internal class UserDeauthorizesStreamEvent : EventsBase
+	[DebuggerDisplay("quoted_tweet")]
+    internal class STQuotedTweet : STEvents
     {
         [DataMember(Name = "source")]
-        public User DeauthorizingUser { get; set; }
+        public User QuotingUser { get; set; }
 
         [DataMember(Name = "target")]
-        public User AppOwner { get; set; }
+        public User CurrentUser { get; set; }
 
         [DataMember(Name = "target_object")]
-        public object TargetObject { get; set; }
+        public Status Tweet { get; set; }
     }
 }

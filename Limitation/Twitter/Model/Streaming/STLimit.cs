@@ -5,13 +5,13 @@ namespace Limitation.Twitter.Model.Streaming
 {
     [DataContract]
 	[DebuggerDisplay("limit track={Limit.Track}")]
-    internal class LimitEvent
+    internal class STLimit
     {
         [DataMember(Name = "limit")]
-        public Limit Limit { get; set; }
+        public LimitObject Limit { get; set; }
                     
         [DataContract]
-        public class Limit
+        public class LimitObject
         {
             [DataMember(Name = "track")]
             public long Track { get; set; }

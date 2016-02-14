@@ -3,15 +3,12 @@ using System.Runtime.Serialization;
 
 namespace Limitation.Twitter.Model.Streaming
 {
-    // access_revoked
+    // user_update
     [DataContract]
-	[DebuggerDisplay("event event={Event}")]
-    internal class BlockEvent : EventsBase
+	[DebuggerDisplay("user_update")]
+    internal class STUserUpdate : STEvents
     {
         [DataMember(Name = "source")]
         public User CurrentUser { get; set; }
-
-        [DataMember(Name = "target")]
-        public User BlockedUser { get; set; }
     }
 }

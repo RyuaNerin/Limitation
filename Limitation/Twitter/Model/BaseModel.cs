@@ -19,17 +19,17 @@ namespace Limitation.Twitter.Model
 
         public virtual long Id { get; set; }
 
-        public int CompareTo(object obj)
+        public virtual int CompareTo(object obj)
         {
-            return GetType() == obj.GetType() ? ((BaseModel<T>)obj).Id.CompareTo(this.Id) : 0;
+            return this.GetType() == obj.GetType() ? this.CompareTo(obj as BaseModel<T>) : 0;
         }
-        public int CompareTo(BaseModel<T> obj)
+        public virtual int CompareTo(BaseModel<T> obj)
         {
-            return this.Id.CompareTo(obj.Id);
+            throw new NotImplementedException();
         }
         public virtual bool Equals(BaseModel<T> other)
         {
-            return other.Id == this.Id;
+            throw new NotImplementedException();
         }
     }
 }

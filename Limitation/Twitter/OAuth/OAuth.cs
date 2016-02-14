@@ -44,7 +44,7 @@ namespace Limitation.Twitter.OAuth
 
         private static string[] oauth_array = { "oauth_consumer_key", "oauth_version", "oauth_nonce", "oauth_signature", "oauth_signature_method", "oauth_timestamp", "oauth_token", "oauth_callback" };
 
-        public WebRequest MakeRequest(string method, string url, object data = null)
+        public WebRequest CreateWebRequest(string method, string url, object data = null)
         {
             method = method.ToUpper();
             var uri = new Uri(url);
@@ -218,7 +218,7 @@ namespace Limitation.Twitter.OAuth
         {
             try
             {
-                var req = MakeRequest("POST", "https://api.twitter.com/oauth/request_token");
+                var req = CreateWebRequest("POST", "https://api.twitter.com/oauth/request_token");
                 using (var res = req.GetResponse())
                 using (var reader = new StreamReader(res.GetResponseStream()))
                 {
@@ -244,7 +244,7 @@ namespace Limitation.Twitter.OAuth
                 var obj = new { oauth_verifier = verifier };
                 var buff = Encoding.UTF8.GetBytes(OAuth.ToString(obj));
 
-                var req = MakeRequest("POST", "https://api.twitter.com/oauth/access_token", obj);
+                var req = CreateWebRequest("POST", "https://api.twitter.com/oauth/access_token", obj);
                 req.GetRequestStream().Write(buff, 0, buff.Length);
 
                 using (var res = req.GetResponse())

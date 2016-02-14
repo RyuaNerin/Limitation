@@ -5,7 +5,7 @@ namespace Limitation.Twitter.Model.Streaming
 {
     [DataContract]
 	[DebuggerDisplay("friends")]
-    internal class FriendsEvent
+    internal class STFriends
     {
         [DataMember(Name = "friends")]
         public long[] Friends { get; set; }
