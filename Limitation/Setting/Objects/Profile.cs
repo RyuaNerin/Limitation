@@ -1,5 +1,6 @@
 ﻿using Limitation.Twitter;
 using Limitation.Twitter.OAuth;
+using Limitation.Twitter.Streaming;
 
 namespace Limitation.Setting.Objects
 {
@@ -40,12 +41,12 @@ namespace Limitation.Setting.Objects
             }
         }
 
-        private TwStreaming m_streaming;
-        public TwStreaming Streaming
+        private TwitterStreaming m_streaming;
+        public TwitterStreaming Streaming
         {
             get
             {
-                return this.m_streaming ?? (this.m_streaming = new TwStreaming(this));
+                return this.m_streaming ?? (this.m_streaming = new TwitterStreaming(this));
             }
         }
     }

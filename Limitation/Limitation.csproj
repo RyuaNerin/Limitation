@@ -87,40 +87,41 @@
     <Compile Include="Setting\Settings.cs" />
     <Compile Include="Setting\Objects\Proxy.cs" />
     <Compile Include="Setting\Objects\Window.cs" />
-    <Compile Include="Twitter\Model\Streaming\Events\STQuotedTweet.cs" />
-    <Compile Include="Twitter\Model\Streaming\Events\STListUserUnsubscribed.cs" />
-    <Compile Include="Twitter\Model\Streaming\Events\STListUserSubscribed.cs" />
-    <Compile Include="Twitter\Model\Streaming\Events\STListMemberRemoved.cs" />
-    <Compile Include="Twitter\Model\Streaming\Events\STListMemberAdded.cs" />
-    <Compile Include="Twitter\Model\Streaming\Events\STListUpdated.cs" />
-    <Compile Include="Twitter\Model\Streaming\Events\STListDestroyed.cs" />
-    <Compile Include="Twitter\Model\Streaming\Events\STListCreated.cs" />
-    <Compile Include="Twitter\Model\Streaming\Events\STUnfollow.cs" />
-    <Compile Include="Twitter\Model\Streaming\Events\STFollow.cs" />
-    <Compile Include="Twitter\Model\Streaming\Events\STUnfavorite.cs" />
-    <Compile Include="Twitter\Model\Streaming\Events\STFavorite.cs" />
-    <Compile Include="Twitter\Model\Streaming\Events\STUnblock.cs" />
-    <Compile Include="Twitter\Model\Streaming\Events\STBlock.cs" />
-    <Compile Include="Twitter\Model\Streaming\Events\STUserDeauthorizesStream.cs" />
-    <Compile Include="Twitter\Model\Streaming\Events\STUserUpdate.cs" />
-    <Compile Include="Twitter\Model\Streaming\STFriends.cs" />
-    <Compile Include="Twitter\Model\Streaming\STEvents.cs" />
-    <Compile Include="Twitter\Model\Streaming\STWarning.cs" />
-    <Compile Include="Twitter\Model\Streaming\STDisconnect.cs" />
-    <Compile Include="Twitter\Model\Streaming\STUserWithheld.cs" />
-    <Compile Include="Twitter\Model\Streaming\STStatusWitheld.cs" />
-    <Compile Include="Twitter\Model\Streaming\STLimit.cs" />
-    <Compile Include="Twitter\Model\Streaming\STScrubGeo.cs" />
+    <Compile Include="Twitter\Streaming\Events\STQuotedTweet.cs" />
+    <Compile Include="Twitter\Streaming\Events\STListUserUnsubscribed.cs" />
+    <Compile Include="Twitter\Streaming\Events\STListUserSubscribed.cs" />
+    <Compile Include="Twitter\Streaming\Events\STListMemberRemoved.cs" />
+    <Compile Include="Twitter\Streaming\Events\STListMemberAdded.cs" />
+    <Compile Include="Twitter\Streaming\Events\STListUpdated.cs" />
+    <Compile Include="Twitter\Streaming\Events\STListDestroyed.cs" />
+    <Compile Include="Twitter\Streaming\Events\STListCreated.cs" />
+    <Compile Include="Twitter\Streaming\Events\STUnfollow.cs" />
+    <Compile Include="Twitter\Streaming\Events\STFollow.cs" />
+    <Compile Include="Twitter\Streaming\Events\STUnfavorite.cs" />
+    <Compile Include="Twitter\Streaming\Events\STFavorite.cs" />
+    <Compile Include="Twitter\Streaming\Events\STUnblock.cs" />
+    <Compile Include="Twitter\Streaming\Events\STBlock.cs" />
+    <Compile Include="Twitter\Streaming\Events\STUserDeauthorizesStream.cs" />
+    <Compile Include="Twitter\Streaming\Events\STUserUpdate.cs" />
+    <Compile Include="Twitter\Streaming\STFriends.cs" />
+    <Compile Include="Twitter\Streaming\STEvents.cs" />
+    <Compile Include="Twitter\Streaming\STWarning.cs" />
+    <Compile Include="Twitter\Streaming\STDisconnect.cs" />
+    <Compile Include="Twitter\Streaming\STUserWithheld.cs" />
+    <Compile Include="Twitter\Streaming\STStatusWitheld.cs" />
+    <Compile Include="Twitter\Streaming\STLimit.cs" />
+    <Compile Include="Twitter\Streaming\STScrubGeo.cs" />
     <Compile Include="Twitter\Model\List.cs" />
-    <Compile Include="Twitter\Objects\SortedObservableCollection.cs" />
-    <Compile Include="Twitter\TwStreaming.cs" />
-    <Compile Include="Twitter\Model\Streaming\STDelete.cs" />
+    <Compile Include="Twitter\SortedObservableCollection.cs" />
+    <Compile Include="Twitter\Streaming\TwitterStreaming.cs" />
+    <Compile Include="Twitter\Streaming\STDelete.cs" />
     <Compile Include="Twitter\OAuth\OAuth.cs" />
     <Compile Include="Twitter\Model\BaseModel.cs" />
     <Compile Include="Twitter\Model\Status.cs" />
     <Compile Include="Twitter\Model\User.cs" />
-    <Compile Include="Twitter\Model\Streaming\Delegates.cs" />
-    <Compile Include="Twitter\TwTimeLine.cs" />
+    <Compile Include="Twitter\Streaming\TwitterStreamingHandler.cs" />
+    <Compile Include="Twitter\TimeLine\TimeLineBase.cs" />
+    <Compile Include="Twitter\TimeLine\TimeLineTypes.cs" />
     <Compile Include="Twitter\Utilities.cs" />
     <Compile Include="Uncommit\TwitterToken.cs" />
     <Compile Include="Windows\MainWindow.xaml.cs">
@@ -143,9 +144,7 @@
     <EmbeddedResource Include="Library\MahApps.Metro-1.1.2\MahApps.Metro.dll" />
     <EmbeddedResource Include="Library\MahApps.Metro-1.1.2\System.Windows.Interactivity.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Twitter\TimeLine\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
