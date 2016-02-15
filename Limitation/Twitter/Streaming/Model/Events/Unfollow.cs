@@ -2,12 +2,12 @@
 using System.Runtime.Serialization;
 using Limitation.Twitter.Model;
 
-namespace Limitation.Twitter.Streaming
+namespace Limitation.Twitter.Streaming.Model
 {
     // unfollow
     [DataContract]
 	[DebuggerDisplay("unfollow")]
-    internal class STUnfollow : STEvents
+    internal class Unfollow : BaseEvents
     {
         [DataMember(Name = "source")]
         public User CurrentUser { get; set; }

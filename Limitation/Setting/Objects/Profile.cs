@@ -1,6 +1,5 @@
-﻿using Limitation.Twitter;
-using Limitation.Twitter.OAuth;
-using Limitation.Twitter.Streaming;
+﻿using Limitation.Twitter.OAuth;
+using Limitation.Twitter.Streaming.Model;
 
 namespace Limitation.Setting.Objects
 {

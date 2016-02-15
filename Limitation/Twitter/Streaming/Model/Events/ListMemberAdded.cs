@@ -2,21 +2,21 @@
 using System.Runtime.Serialization;
 using Limitation.Twitter.Model;
 
-namespace Limitation.Twitter.Streaming
+namespace Limitation.Twitter.Streaming.Model
 {
-    // list_user_subscribed
+    // list_member_added
     [DataContract]
-	[DebuggerDisplay("list_user_subscribed")]
-    internal class STListUserSubscribed : STEvents
+    [DebuggerDisplay("list_member_added")]
+    internal class ListMemberAdded : BaseEvents
     {
         /// <summary>
-        /// Current User / Subscribing User
+        /// Current User / Adding User
         /// </summary>
         [DataMember(Name = "source")]
         public User Source { get; set; }
 
         /// <summary>
-        /// List Owner / Current User
+        /// Added User / Current User
         /// </summary>
         [DataMember(Name = "target")]
         public User Target { get; set; }

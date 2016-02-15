@@ -1,17 +1,17 @@
 ﻿using System.Diagnostics;
 using System.Runtime.Serialization;
 
-namespace Limitation.Twitter.Streaming
+namespace Limitation.Twitter.Streaming.Model
 {
     [DataContract]
 	[DebuggerDisplay("delete id={Delete.Id}, user_id={Delete.UserId}")]
-    internal class STDelete
+    internal class Delete : TwitterStreamingMessage
     {
-        [DataMember(Name = "delete")]
-        public DeleteObject Delete { get; set; }
-                    
+        [DataMember(Name = "status")]
+        public StatusObject Status { get; set; }
+
         [DataContract]
-        public class DeleteObject
+        public class StatusObject
         {
             [DataMember(Name = "id")]
             public long Id { get; set; }

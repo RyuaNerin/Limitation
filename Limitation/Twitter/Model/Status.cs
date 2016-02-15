@@ -40,7 +40,7 @@ namespace Limitation.Twitter.Model
             [EnumMember(Value = "medium")]  Medium
         }
         
-        [DataMember(Name = "id")]
+        [DataMember(Name = "id", IsRequired = true)]
         public override long Id { get; set; }
 
         [DataMember(Name = "in_reply_to_screen_name")]
@@ -87,10 +87,10 @@ namespace Limitation.Twitter.Model
 
         public string SourceUri { get; set; }
 
-        [DataMember(Name = "text")]
+        [DataMember(Name = "text", IsRequired = true)]
         public string Text { get; set; }
     
-        [DataMember(Name = "user")]
+        [DataMember(Name = "user", IsRequired = true)]
         public User User { get; set; }
 
         //////////////////////////////////////////////////

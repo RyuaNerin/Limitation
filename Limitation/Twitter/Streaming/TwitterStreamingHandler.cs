@@ -1,41 +1,41 @@
 ﻿using System.Net;
 using Limitation.Setting;
+using Limitation.Twitter.Model;
 
-namespace Limitation.Twitter.Streaming
+namespace Limitation.Twitter.Streaming.Model
 {
-    internal interface TwitterStreamingHandler
-    {
-        public virtual void OnConnected(TwitterStreaming sender);
-        public virtual void OnError(TwitterStreaming sender, WebException exception);
-        public virtual void OnDisconnected(TwitterStreaming sender);
+    internal delegate void OnStreamingConnected(TwitterStreaming sender);
+    internal delegate void OnStreamingError(TwitterStreaming sender, WebException exception);
+    internal delegate void OnStreamingDisconnected(TwitterStreaming sender);
 
-        public virtual void OnDelete(TwitterStreaming sender, STDelete @event) { }
-        public virtual void OnScrubGeo(TwitterStreaming sender, STScrubGeo @event) { }
-        public virtual void OnLimit(TwitterStreaming sender, STLimit @event) { }
-        public virtual void OnStatusWitheld(TwitterStreaming sender, STStatusWitheld @event) { }
-        public virtual void OnUserWitheld(TwitterStreaming sender, STUserWithheld @event) { }
-        public virtual void OnDisconnected(TwitterStreaming sender, STDisconnect @event) { }
+    internal delegate void OnDelete(TwitterStreaming sender, Delete @event);
+    internal delegate void OnScrubGeo(TwitterStreaming sender, ScrubGeo @event);
+    internal delegate void OnLimit(TwitterStreaming sender, Limit @event);
+    internal delegate void OnStatusWithheld(TwitterStreaming sender, StatusWithheld @event);
+    internal delegate void OnUserWithheld(TwitterStreaming sender, UserWithheld @event);
+    internal delegate void OnDisconnected(TwitterStreaming sender, Disconnect @event);
 
-        public virtual void OnStallWarning(TwitterStreaming sender, STWarning @event) { }
-        public virtual void OnTooManyFollowsWarning(TwitterStreaming sender, STWarning @event) { }
+    internal delegate void OnStallWarning(TwitterStreaming sender, StallWarning @event);
+    internal delegate void OnTooManyFollowsWarning(TwitterStreaming sender, TooManyFollowsWarning @event);
 
-        public virtual void OnFriends(TwitterStreaming sender, STFriends @event) { }
+    internal delegate void OnFriends(TwitterStreaming sender, long[] @event);
 
-        public virtual void OnUserUpdate(TwitterStreaming sender, STUserUpdate @event) { }
-        public virtual void OnUserDeauthorizesStream(TwitterStreaming sender, STUserDeauthorizesStream @event) { }
-        public virtual void OnBlock(TwitterStreaming sender, STBlock @event) { }
-        public virtual void OnUnblock(TwitterStreaming sender, STUnblock @event) { }
-        public virtual void OnFavorite(TwitterStreaming sender, STFavorite @event) { }
-        public virtual void OnUnfavorite(TwitterStreaming sender, STUnfavorite @event) { }
-        public virtual void OnFollow(TwitterStreaming sender, STFollow @event) { }
-        public virtual void OnUnfollow(TwitterStreaming sender, STUnfollow @event) { }
-        public virtual void OnListCreated(TwitterStreaming sender, STListCreated @event) { }
-        public virtual void OnListDestroyed(TwitterStreaming sender, STListDestroyed @event) { }
-        public virtual void OnListUpdated(TwitterStreaming sender, STListUpdated @event) { }
-        public virtual void OnListMemberAdded(TwitterStreaming sender, STListMemberAdded @event) { }
-        public virtual void OnListMemberRemoved(TwitterStreaming sender, STListMemberRemoved @event) { }
-        public virtual void OnListUserSubscribed(TwitterStreaming sender, STListUserSubscribed @event) { }
-        public virtual void OnListUserUnsubscribed(TwitterStreaming sender, STListUserUnsubscribed @event) { }
-        public virtual void OnQuotedTweet(TwitterStreaming sender, STQuotedTweet @event) { }
-    }
+    internal delegate void OnUserUpdate(TwitterStreaming sender, UserUpdate @event);
+    internal delegate void OnUserDeauthorizesStream(TwitterStreaming sender, UserDeauthorizesStream @event);
+    internal delegate void OnBlock(TwitterStreaming sender, Block @event);
+    internal delegate void OnUnblock(TwitterStreaming sender, Unblock @event);
+    internal delegate void OnFavorite(TwitterStreaming sender, Favorite @event);
+    internal delegate void OnUnfavorite(TwitterStreaming sender, Unfavorite @event);
+    internal delegate void OnFollow(TwitterStreaming sender, Follow @event);
+    internal delegate void OnUnfollow(TwitterStreaming sender, Unfollow @event);
+    internal delegate void OnListCreated(TwitterStreaming sender, ListCreated @event);
+    internal delegate void OnListDestroyed(TwitterStreaming sender, ListDestroyed @event);
+    internal delegate void OnListUpdated(TwitterStreaming sender, ListUpdated @event);
+    internal delegate void OnListMemberAdded(TwitterStreaming sender, ListMemberAdded @event);
+    internal delegate void OnListMemberRemoved(TwitterStreaming sender, ListMemberRemoved @event);
+    internal delegate void OnListUserSubscribed(TwitterStreaming sender, ListUserSubscribed @event);
+    internal delegate void OnListUserUnsubscribed(TwitterStreaming sender, ListUserUnsubscribed @event);
+    internal delegate void OnQuotedTweet(TwitterStreaming sender, QuotedTweet @event);
+
+    internal delegate void OnStatusUpdated(TwitterStreaming sender, Status @event);
 }

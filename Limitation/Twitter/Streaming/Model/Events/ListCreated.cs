@@ -2,12 +2,12 @@
 using System.Runtime.Serialization;
 using Limitation.Twitter.Model;
 
-namespace Limitation.Twitter.Streaming
+namespace Limitation.Twitter.Streaming.Model
 {
-    // list_destroyed
+    // list_created
     [DataContract]
-	[DebuggerDisplay("list_destroyed")]
-    internal class STListDestroyed : STEvents
+    [DebuggerDisplay("list_created")]
+    internal class ListCreated : BaseEvents
     {
         [DataMember(Name = "source")]
         public User CurrentUser { get; set; }

@@ -41,7 +41,7 @@ namespace Limitation.Twitter.Model
         [DataMember(Name = "geo_enabled")]
         public int GeoEnabled { get; set; }
 
-        [DataMember(Name = "id")]
+        [DataMember(Name = "id", IsRequired = true)]
         public override long Id { get; set; }
 
         [DataMember(Name = "lang")]
@@ -81,7 +81,7 @@ namespace Limitation.Twitter.Model
         public bool Protected { get; set; }
         
         private string m_screenname;
-        [DataMember(Name = "screen_name")]
+        [DataMember(Name = "screen_name", IsRequired = true)]
         public string ScreenName
         {
             get { return m_screenname; }

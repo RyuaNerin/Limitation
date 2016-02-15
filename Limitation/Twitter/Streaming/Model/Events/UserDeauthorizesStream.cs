@@ -2,12 +2,12 @@
 using System.Runtime.Serialization;
 using Limitation.Twitter.Model;
 
-namespace Limitation.Twitter.Streaming
+namespace Limitation.Twitter.Streaming.Model
 {
     // access_revoked
     [DataContract]
 	[DebuggerDisplay("access_revoked")]
-    internal class STUserDeauthorizesStream : STEvents
+    internal class UserDeauthorizesStream : BaseEvents
     {
         [DataMember(Name = "source")]
         public User DeauthorizingUser { get; set; }

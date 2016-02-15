@@ -1,27 +1,20 @@
 ﻿using System.Diagnostics;
 using System.Runtime.Serialization;
 
-namespace Limitation.Twitter.Streaming
+namespace Limitation.Twitter.Streaming.Model
 {
     [DataContract]
 	[DebuggerDisplay("disconnect Code={Disconnect.Code}, StreamName={Disconnect.StreamName}, Reason={Disconnect.Reason}")]
-    internal class STDisconnect
+    internal class Disconnect : TwitterStreamingMessage
     {
-        [DataMember(Name = "disconnect")]
-        public DisconnectObject Disconnect { get; set; }
-                    
-        [DataContract]
-        public class DisconnectObject
-        {
-            [DataMember(Name = "code")]
-            public DisconnectCodes Code { get; set; }
+        [DataMember(Name = "code")]
+        public DisconnectCodes Code { get; set; }
 
-            [DataMember(Name = "stream_name")]
-            public string StreamName { get; set; }
+        [DataMember(Name = "stream_name")]
+        public string StreamName { get; set; }
 
-            [DataMember(Name = "reason")]
-            public string Reason { get; set; }
-        }
+        [DataMember(Name = "reason")]
+        public string Reason { get; set; }
 
         [DataContract]
         public enum DisconnectCodes

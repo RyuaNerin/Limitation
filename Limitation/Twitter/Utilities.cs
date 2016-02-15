@@ -12,32 +12,22 @@ namespace Limitation.Twitter
     internal class Utilities
     {
         private static IDictionary<Type, DataContractJsonSerializer> m_table = new Dictionary<Type, DataContractJsonSerializer>();
-        private static DataContractJsonSerializerSettings m_serializerSetting = new DataContractJsonSerializerSettings { DateTimeFormat = new DateTimeFormat("")};
+        private static DataContractJsonSerializerSettings m_serializerSetting = new DataContractJsonSerializerSettings { DateTimeFormat = new DateTimeFormat("ddd MMM dd HH:mm:ss zzzz yyyy")};
 
         public static T ParseJsonObject<T>(string json)
+            where T: class
         {
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
-            {
-                var type = typeof(T);
-
-                DataContractJsonSerializer serializer;
-                lock (m_table)
-                {
-                    if (m_table.ContainsKey(type))
-                        serializer = Utilities.m_table[type];
-                    else
-                        Utilities.m_table.Add(type, serializer = new DataContractJsonSerializer(type, Utilities.m_serializerSetting));
-                }
-
-                return (T)serializer.ReadObject(stream);
-            }
+            return ParseJson(typeof(T), json) as T;
         }
         public static T[] ParseJsonArray<T>(string json)
+            where T : class
+        {
+            return ParseJson(typeof(T[]), json) as T[];
+        }
+        public static object ParseJson(Type type, string json)
         {
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
             {
-                var type = typeof(T[]);
-
                 DataContractJsonSerializer serializer;
                 lock (m_table)
                 {
@@ -47,7 +37,7 @@ namespace Limitation.Twitter
                         Utilities.m_table.Add(type, serializer = new DataContractJsonSerializer(type, Utilities.m_serializerSetting));
                 }
 
-                return (T[])serializer.ReadObject(stream);
+                return serializer.ReadObject(stream);
             }
         }
     }

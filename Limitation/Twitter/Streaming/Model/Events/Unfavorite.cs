@@ -2,23 +2,26 @@
 using System.Runtime.Serialization;
 using Limitation.Twitter.Model;
 
-namespace Limitation.Twitter.Streaming
+namespace Limitation.Twitter.Streaming.Model
 {
-    // follow
+    // unfavorite
     [DataContract]
-	[DebuggerDisplay("follow")]
-    internal class STFollow : STEvents
+	[DebuggerDisplay("unfavorite")]
+    internal class Unfavorite : BaseEvents
     {
         /// <summary>
-        /// Current User / Following User
+        /// Current User / Liking User
         /// </summary>
         [DataMember(Name = "source")]
         public User Source { get; set; }
 
         /// <summary>
-        /// Followed User / Current User
+        /// Tweet Author / Current User
         /// </summary>
         [DataMember(Name = "target")]
         public User Target { get; set; }
+
+        [DataMember(Name = "target_object")]
+        public Status Tweet { get; set; }
     }
 }

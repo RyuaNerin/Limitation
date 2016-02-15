@@ -2,12 +2,12 @@
 using System.Runtime.Serialization;
 using Limitation.Twitter.Model;
 
-namespace Limitation.Twitter.Streaming
+namespace Limitation.Twitter.Streaming.Model
 {
     // quoted_tweet
     [DataContract]
 	[DebuggerDisplay("quoted_tweet")]
-    internal class STQuotedTweet : STEvents
+    internal class QuotedTweet : BaseEvents
     {
         [DataMember(Name = "source")]
         public User QuotingUser { get; set; }

@@ -26,7 +26,7 @@ namespace Limitation.Twitter.Model
         [DataMember(Name = "following")]
         public bool Following { get; set; }
         
-        [DataMember(Name = "member_count")]
+        [DataMember(Name = "member_count", IsRequired = true)]
         public int MemberCount { get; set; }
 
         [DataMember(Name = "subscriber_count")]
@@ -35,7 +35,7 @@ namespace Limitation.Twitter.Model
         [DataMember(Name = "user")]
         public User User { get; set; }
         
-        [DataMember(Name = "id")]
+        [DataMember(Name = "id", IsRequired = true)]
         public override long Id { get; set; }
 
         [DataMember(Name = "uri")]

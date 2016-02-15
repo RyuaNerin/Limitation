@@ -2,26 +2,26 @@
 using System.Runtime.Serialization;
 using Limitation.Twitter.Model;
 
-namespace Limitation.Twitter.Streaming
+namespace Limitation.Twitter.Streaming.Model
 {
-    // unfavorite
+    // list_user_unsubscribed
     [DataContract]
-	[DebuggerDisplay("unfavorite")]
-    internal class STUnfavorite : STEvents
+	[DebuggerDisplay("list_user_unsubscribed")]
+    internal class ListUserUnsubscribed : BaseEvents
     {
         /// <summary>
-        /// Current User / Liking User
+        /// Current User / Unsubscribing User
         /// </summary>
         [DataMember(Name = "source")]
         public User Source { get; set; }
 
         /// <summary>
-        /// Tweet Author / Current User
+        /// List Owner / Current User
         /// </summary>
         [DataMember(Name = "target")]
         public User Target { get; set; }
 
         [DataMember(Name = "target_object")]
-        public Status Tweet { get; set; }
+        public List List { get; set; }
     }
 }

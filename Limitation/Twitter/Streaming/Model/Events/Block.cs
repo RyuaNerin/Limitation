@@ -2,17 +2,17 @@
 using System.Runtime.Serialization;
 using Limitation.Twitter.Model;
 
-namespace Limitation.Twitter.Streaming
+namespace Limitation.Twitter.Streaming.Model
 {
-    // unblock
+    // block
     [DataContract]
-	[DebuggerDisplay("unblock")]
-    internal class STUnblock : STEvents
+    [DebuggerDisplay("block")]
+    internal class Block : BaseEvents
     {
         [DataMember(Name = "source")]
         public User CurrentUser { get; set; }
 
         [DataMember(Name = "target")]
-        public User UnblockedUser { get; set; }
+        public User BlockedUser { get; set; }
     }
 }

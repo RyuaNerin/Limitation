@@ -26,12 +26,18 @@ namespace Limitation.Setting
             LoadSetting();
         }
 
-        private static IEnumerable<PropertyInfo> GetProperties(Type type, bool @readonly = true)
+        private static PropertyInfo[][] GetPropertiesSplited(Type type, bool @readonly = true)
         {
-            return
-                type
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty | (@readonly ? BindingFlags.Default : BindingFlags.SetProperty))
-                .Where(e => e.CustomAttributes.Any(ee => ee.AttributeType == typeof(SettingAttr)));
+            var props = GetProperties(type, @readonly);
+
+            return new PropertyInfo[][] { props.Where(e => !e.GetGetMethod().ReturnType.IsClass).ToArray(), props.Where(e =>  e.GetGetMethod().ReturnType.IsClass).ToArray() };
+        }
+        private static PropertyInfo[] GetProperties(Type type, bool @readonly = true)
+        {
+            return type
+                   .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty | (@readonly ? BindingFlags.Default : BindingFlags.SetProperty))
+                   .Where(e => e.CustomAttributes.Any(ee => ee.AttributeType == typeof(SettingAttr)))
+                   .ToArray();
         }
 
         public static void SaveSetting()
@@ -41,41 +47,54 @@ namespace Limitation.Setting
                 MethodInfo method;
                 Type resultType;
 
-                foreach (var prop in GetProperties(typeof(Settings)))
+                var props = GetPropertiesSplited(typeof(Settings));
+                
+                if (props[0].Length > 0)
+                {
+                    writer.WriteLine("[Settings]");
+                    foreach (var prop in props[0])
+                        writer.WriteLine("{0}={1}", prop.Name, Object2String(prop.GetValue(Settings.Instance)));
+                }
+
+                foreach (var prop in props[1])
                 {
                     method = prop.GetGetMethod();
                     resultType = method.ReturnType;
-                    
-                    if (resultType.IsGenericType)
-                    {
-                        foreach (var subValue in (IEnumerable)prop.GetValue(Settings.Instance))
-                        {
-                            writer.WriteLine("[{0}]", prop.Name);
-                            foreach (var subProp in GetProperties(subValue.GetType(), false))
-                                writer.WriteLine("{0}={1}", subProp.Name, Object2String(subProp.GetValue(subValue)));
-                        }
-                    }
-                    else
-                    {
-                        var value = prop.GetValue(Settings.Instance);
 
-                        writer.WriteLine("[{0}]", prop.Name);
-                        foreach (var subProp in GetProperties(value.GetType(), false))
-                            writer.WriteLine("{0}={1}", subProp.Name, Object2String(subProp.GetValue(value)));
-                    }
+                    if (!resultType.IsClass)
+                    {
+                        if (resultType.IsGenericType)
+                        {
+                            foreach (var subValue in (IEnumerable)prop.GetValue(Settings.Instance))
+                            {
+                                writer.WriteLine("[{0}]", prop.Name);
+                                foreach (var subProp in GetProperties(subValue.GetType(), false))
+                                    writer.WriteLine("{0}={1}", subProp.Name, Object2String(subProp.GetValue(subValue)));
+                            }
+                        }
+                        else
+                        {
+                            var value = prop.GetValue(Settings.Instance);
+
+                            writer.WriteLine("[{0}]", prop.Name);
+                            foreach (var subProp in GetProperties(value.GetType(), false))
+                                writer.WriteLine("{0}={1}", subProp.Name, Object2String(subProp.GetValue(value)));
+                        }
+                    }                    
                 }
             }
         }
         private static void LoadSetting()
         {
             if (!File.Exists(SettingFilePath)) return;
-            
-            PropertyInfo[] groupProps = GetProperties(typeof(Settings)).ToArray();
-            object groupValue = null;
 
-            PropertyInfo   valueProp  = null;
-            PropertyInfo[] valueProps = null;
+            PropertyInfo[][] groupProps = GetPropertiesSplited(typeof(Settings));
+            PropertyInfo[]   valueProps = null;
+
+            object groupValue = null;
             
+            //////////////////////////////////////////////////
+            PropertyInfo   valueProp  = null;            
             string[] prop;
 
             using (var reader = new StreamReader(SettingFilePath))
@@ -85,18 +104,26 @@ namespace Limitation.Setting
                 {
                     if (line.StartsWith("["))
                     {
-                        line = line.Substring(1, line.Length - 2);
-                        groupValue = groupProps.First(e => e.Name == line).GetValue(Settings.Instance);
-
-                        var groupType = groupValue.GetType();
-                        if (groupType.IsGenericType)
+                        line = line.Substring(1, line.Length - 2).ToLower();
+                        if (line == "Settings")
                         {
-                            var method = groupType.GetMethod("Add");
-                            var newValue = Activator.CreateInstance(groupType.GetGenericArguments()[0]);
-                            method.Invoke(groupValue, new object[] { newValue });
+                            groupValue = Settings.Instance;
+                            valueProps = groupProps[0];
                         }
+                        else
+                        {
+                            groupValue = groupProps[1].First(e => e.Name == line).GetValue(Settings.Instance);
 
-                        valueProps = GetProperties(groupType, false).ToArray();
+                            var groupType = groupValue.GetType();
+                            if (groupType.IsGenericType)
+                            {
+                                var method = groupType.GetMethod("Add");
+                                var newValue = Activator.CreateInstance(groupType.GetGenericArguments()[0]);
+                                method.Invoke(groupValue, new object[] { newValue });
+                            }
+
+                            valueProps = GetProperties(groupType, false).ToArray();
+                        }
                     }
                     else if (groupValue != null)
                     {

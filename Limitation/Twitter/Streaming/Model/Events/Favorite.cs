@@ -2,12 +2,12 @@
 using System.Runtime.Serialization;
 using Limitation.Twitter.Model;
 
-namespace Limitation.Twitter.Streaming
+namespace Limitation.Twitter.Streaming.Model
 {
     // favorite
     [DataContract]
-	[DebuggerDisplay("favorite")]
-    internal class STFavorite : STEvents
+    [DebuggerDisplay("favorite")]
+    internal class Favorite : BaseEvents
     {
         /// <summary>
         /// Current User / Liking User
