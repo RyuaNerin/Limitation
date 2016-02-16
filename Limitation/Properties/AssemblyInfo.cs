@@ -9,16 +9,16 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Limitation")]
-[assembly: AssemblyCopyright("Made By RyuaNerin")]
-[assembly: AssemblyTrademark("RyuaNerin")]
+[assembly: AssemblyCopyright("CopyLeft (C) By RyuaNerin")]
+[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
 
 [assembly: ThemeInfo(
 ResourceDictionaryLocation.None,
-ResourceDictionaryLocation.SourceAssembly
+ResourceDictionaryLocation.None
 )]
 
-[assembly: AssemblyVersion("0.0.0.0")]
-[assembly: AssemblyFileVersion("0.0.0.0")]
+[assembly: AssemblyVersion("2016.2.16.2")]
+[assembly: AssemblyFileVersion("2016.2.16.1")]

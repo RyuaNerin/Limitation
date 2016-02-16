@@ -89,12 +89,11 @@ namespace Limitation.Setting
             if (!File.Exists(SettingFilePath)) return;
 
             PropertyInfo[][] groupProps = GetPropertiesSplited(typeof(Settings));
-            PropertyInfo[]   valueProps = null;
-
             object groupValue = null;
-            
+
             //////////////////////////////////////////////////
-            PropertyInfo   valueProp  = null;            
+            PropertyInfo[] valueProps = null;
+            PropertyInfo   valueProp  = null;
             string[] prop;
 
             using (var reader = new StreamReader(SettingFilePath))
@@ -117,9 +116,8 @@ namespace Limitation.Setting
                             var groupType = groupValue.GetType();
                             if (groupType.IsGenericType)
                             {
-                                var method = groupType.GetMethod("Add");
-                                var newValue = Activator.CreateInstance(groupType.GetGenericArguments()[0]);
-                                method.Invoke(groupValue, new object[] { newValue });
+                                groupValue = Activator.CreateInstance(groupType.GetGenericArguments()[0]);
+                                groupType.GetMethod("Add").Invoke(groupValue, new object[] { groupValue });
                             }
 
                             valueProps = GetProperties(groupType, false).ToArray();
@@ -130,10 +128,9 @@ namespace Limitation.Setting
                         prop = line.Split('=');
                         if (prop.Length == 2)
                         {
-                            valueProp = valueProps.First(e => e.Name == prop[0]);
-
                             try
                             {
+                                valueProp = valueProps.First(e => e.Name == prop[0]);
                                 valueProp.SetValue(groupValue, String2Object(prop[1], valueProp.PropertyType));
                             }
                             catch
@@ -171,6 +168,10 @@ namespace Limitation.Setting
         private Proxy m_proxy = new Proxy();
         [SettingAttr]
         public Proxy Proxy { get { return m_proxy; } }
+
+        private Interface m_interface = new Interface();
+        [SettingAttr]
+        public Interface Interface { get { return m_interface; } }
 
         private Window m_window = new Window();
         [SettingAttr]

@@ -15,8 +15,13 @@ namespace Limitation.Twitter.Model
         [DataMember(Name = "entities")]
         public StatusEntities Entities { get; set; }
 
+        private int m_favoriteCount;
         [DataMember(Name = "favorite_count")]
-        public int FavoriteCount { get; set; }
+        public int FavoriteCount
+        {
+            get { return m_favoriteCount; }
+            set { m_favoriteCount = value; OnPropertyChanged(); }
+        }
 
         private bool m_favorited;
         [DataMember(Name = "favorited")]
@@ -61,11 +66,21 @@ namespace Limitation.Twitter.Model
         [DataMember(Name = "quoted_status")]
         public Status QuotedStatus { get; set; }
 
+        private int m_retweetCount;
         [DataMember(Name = "retweet_count")]
-        public int RetweetCount { get; set; }
+        public int RetweetCount
+        {
+            get { return m_retweetCount; }
+            set { m_retweetCount = value; OnPropertyChanged(); }
+        }
 
+        private bool m_retweeted;
         [DataMember(Name = "retweeted")]
-        public bool Retweeted { get; set; }
+        public bool Retweeted
+        {
+            get { return m_retweeted; }
+            set { m_retweeted = value; OnPropertyChanged(); }
+        }
 
         [DataMember(Name = "retweeted_status")]
         public Status RetweetedStatus { get; set; }
@@ -103,6 +118,22 @@ namespace Limitation.Twitter.Model
 
         [DataMember(Name = "current_user_retweet")]
         public CurrentUserRetweet CurrentUserRetweet { get; set; }
+
+        //////////////////////////////////////////////////
+
+        private int m_isDeleted;
+        public int IsDeleted
+        {
+            get { return m_isDeleted; }
+            set { m_isDeleted = value; OnPropertyChanged(); }
+        }
+
+        private int m_isRetweetedByMe;
+        public int IsRetweetedByMe
+        {
+            get { return m_isRetweetedByMe; }
+            set { m_isRetweetedByMe = value; OnPropertyChanged(); }
+        }
 	}
 
     [DataContract]

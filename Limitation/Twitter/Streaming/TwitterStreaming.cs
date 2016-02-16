@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.IO;
+﻿using System.IO;
 using System.Net;
-using System.Reflection;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
-using System.Linq;
 using Limitation.Setting.Objects;
+using Limitation.Twitter.Model;
+using Limitation.Twitter.Streaming.Model;
 
-namespace Limitation.Twitter.Streaming.Model
+namespace Limitation.Twitter.Streaming
 {
     internal class TwitterStreaming
     {
-        // All User | All Replies | No Followings
-        private const string StreamingUri = "https://userstream.twitter.com/1.1/user.json?with=user&replies=all&stringify_friend_ids=false";
+        // All User | No Followings
+        private const string StreamingUri = "https://userstream.twitter.com/1.1/user.json?with=user&stringify_friend_ids=false";
 
         public TwitterStreaming(Profile profile)
         {
@@ -166,6 +163,10 @@ namespace Limitation.Twitter.Streaming.Model
 
             if (parser.Warning != null) { this.HandleMessage(parser.Warning, body); return; }
             if (parser.Event   != null) { this.HandleMessage(parser.Event,   body); return; }
+
+            var status = Utilities.ParseJsonObject<Status>(body);
+            if (status != null && this.OnStatusUpdated != null)
+                this.OnStatusUpdated.Invoke(this, status);
         }
 
         private void HandleMessage(string @event, string body)
@@ -188,7 +189,7 @@ namespace Limitation.Twitter.Streaming.Model
                 case "list_user_subscribed":    if (this.OnListUserSubscribed       != null) this.OnListUserSubscribed    .Invoke(this, Utilities.ParseJsonObject<ListUserSubscribed    >(body)); return;
                 case "list_user_unsubscribed":  if (this.OnListUserUnsubscribed     != null) this.OnListUserUnsubscribed  .Invoke(this, Utilities.ParseJsonObject<ListUserUnsubscribed  >(body)); return;
                 case "quoted_tweet":            if (this.OnQuotedTweet              != null) this.OnQuotedTweet           .Invoke(this, Utilities.ParseJsonObject<QuotedTweet           >(body)); return;
-                case "user_update":             if (this.OnListUpdated              != null) this.OnListUpdated           .Invoke(this, Utilities.ParseJsonObject<ListUpdated           >(body)); return;
+                case "user_update":             if (this.OnUserUpdate               != null) this.OnUserUpdate            .Invoke(this, Utilities.ParseJsonObject<UserUpdate            >(body)); return;
             }
         }
 

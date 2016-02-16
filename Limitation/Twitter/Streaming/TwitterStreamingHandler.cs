@@ -1,8 +1,8 @@
 ﻿using System.Net;
-using Limitation.Setting;
 using Limitation.Twitter.Model;
+using Limitation.Twitter.Streaming.Model;
 
-namespace Limitation.Twitter.Streaming.Model
+namespace Limitation.Twitter.Streaming
 {
     internal delegate void OnStreamingConnected(TwitterStreaming sender);
     internal delegate void OnStreamingError(TwitterStreaming sender, WebException exception);

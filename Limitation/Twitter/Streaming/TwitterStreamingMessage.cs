@@ -1,4 +1,4 @@
-﻿namespace Limitation.Twitter.Streaming.Model
+﻿namespace Limitation.Twitter.Streaming
 {
     internal interface TwitterStreamingMessage
     { }

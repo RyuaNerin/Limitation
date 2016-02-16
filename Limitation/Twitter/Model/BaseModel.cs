@@ -1,15 +1,23 @@
 ﻿using System;
 using System.ComponentModel;
-using System.IO;
 using System.Runtime.CompilerServices;
-using System.Runtime.Serialization.Json;
-using System.Text;
 
 namespace Limitation.Twitter.Model
 {
-    internal class BaseModel<T> : IComparable, IComparable<BaseModel<T>>, IEquatable<BaseModel<T>>, INotifyPropertyChanged
+    internal interface BaseModel : IComparable
+    {
+        Type ModelType { get; }
+        long Id { get; }
+    }
+
+    internal abstract class BaseModel<T> : BaseModel, IComparable<T>, IEquatable<T>, INotifyPropertyChanged
+        where T : BaseModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public Type ModelType { get { return typeof(T); } }
+
+        public abstract long Id { get; set; }
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -17,19 +25,22 @@ namespace Limitation.Twitter.Model
                 this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public virtual long Id { get; set; }
+        public int CompareTo(object obj)
+        {
+            return this.GetType() == obj.GetType() ? this.CompareTo(obj as BaseModel) : 0;
+        }
+        public bool Equals(T other)
+        {
+            return this.CompareTo(other) == 0;
+        }
+        public int CompareTo(T other)
+        {
+            return this.Id.CompareTo(other.Id);
+        }
 
-        public virtual int CompareTo(object obj)
+        public void Update(T newObject)
         {
-            return this.GetType() == obj.GetType() ? this.CompareTo(obj as BaseModel<T>) : 0;
-        }
-        public virtual int CompareTo(BaseModel<T> obj)
-        {
-            throw new NotImplementedException();
-        }
-        public virtual bool Equals(BaseModel<T> other)
-        {
-            throw new NotImplementedException();
+            
         }
     }
 }

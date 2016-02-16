@@ -2,7 +2,7 @@
 using System.Windows.Threading;
 using Limitation.Setting.Objects;
 using Limitation.Twitter.Model;
-using Limitation.Twitter.Streaming.Model;
+using Limitation.Twitter.Streaming;
 
 namespace Limitation.Twitter.TimeLine
 {
