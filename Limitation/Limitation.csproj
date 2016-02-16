@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-    <AssemblyVersion>2016.2.16.2</AssemblyVersion>
+    <AssemblyVersion>2016.2.16.25</AssemblyVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">.\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
@@ -95,9 +95,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Setting\Objects\Interface.cs" />
+    <Compile Include="Setting\Objects\Design.cs" />
+    <Compile Include="Setting\Objects\TimeLine.cs" />
     <Compile Include="Setting\Objects\Profile.cs" />
-    <Compile Include="Setting\Settings.cs" />
+    <Compile Include="Setting\Options.cs" />
     <Compile Include="Setting\Objects\Proxy.cs" />
     <Compile Include="Setting\Objects\Window.cs" />
     <Compile Include="Twitter\Container.cs" />

@@ -1,11 +1,14 @@
-﻿using Limitation.Windows;
+﻿using System.ComponentModel;
+using System.Runtime.Serialization;
+using Limitation.Windows;
 
 namespace Limitation.Setting.Objects
 {
+    [DataContract]
     internal class Window
     {
         private long m_x = -1;
-        [SettingAttr]
+        [DataMember(Name = "x")]
         public int X
         {
             get { return (int)MainWindow.Instance.Left; }
@@ -13,7 +16,7 @@ namespace Limitation.Setting.Objects
         }
 
         private long m_y = -1;
-        [SettingAttr]
+        [DataMember(Name = "y")]
         public int Y
         {
             get { return (int)MainWindow.Instance.Top; }
@@ -21,7 +24,7 @@ namespace Limitation.Setting.Objects
         }
 
         private long m_w = -1;
-        [SettingAttr]
+        [DataMember(Name = "w")]
         public int W
         {
             get { return (int)MainWindow.Instance.Width; }
@@ -29,7 +32,7 @@ namespace Limitation.Setting.Objects
         }
 
         private long m_h = -1;
-        [SettingAttr]
+        [DataMember(Name = "h")]
         public int H
         {
             get { return (int)MainWindow.Instance.Height; }

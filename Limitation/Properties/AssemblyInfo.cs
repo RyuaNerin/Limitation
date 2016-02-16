@@ -20,5 +20,5 @@ ResourceDictionaryLocation.None,
 ResourceDictionaryLocation.None
 )]
 
-[assembly: AssemblyVersion("2016.2.16.2")]
-[assembly: AssemblyFileVersion("2016.2.16.1")]
+[assembly: AssemblyVersion("2016.2.16.25")]
+[assembly: AssemblyFileVersion("2016.2.16.25")]

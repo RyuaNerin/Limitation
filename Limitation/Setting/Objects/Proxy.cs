@@ -1,31 +1,33 @@
 ﻿using System.Net;
 using System.ComponentModel;
+using System.Runtime.Serialization;
 
 namespace Limitation.Setting.Objects
-{    
+{
+    [DataContract]
     internal class Proxy
     {
-        [SettingAttr]
+        [DataMember(Name = "use_proxy")]
         [DefaultValue(true)]
         public bool UseProxy { get; set; }
 
-        [SettingAttr]
+        [DataMember(Name = "use_system")]
         [DefaultValue(true)]
         public bool UseSystem { get; set; }
 
-        [SettingAttr]
+        [DataMember(Name = "host")]
         [DefaultValue(null)]
         public string Host { get; set; }
 
-        [SettingAttr]
+        [DataMember(Name = "port")]
         [DefaultValue(80)]
         public int Port { get; set; }
 
-        [SettingAttr]
+        [DataMember(Name = "id")]
         [DefaultValue(null)]
         public string Id { get; set; }
 
-        [SettingAttr]
+        [DataMember(Name = "pw")]
         [DefaultValue(null)]
         public string Password { get; set; }
 

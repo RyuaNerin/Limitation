@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Limitation.Twitter.Model;
 
-namespace Limitation.Twitter.Containers
+namespace Limitation.Twitter
 {
     internal static class Container
     {
@@ -14,7 +11,7 @@ namespace Limitation.Twitter.Containers
         private static SortedList<long, WeakReference> m_status = new SortedList<long, WeakReference>(1024);
         private static SortedList<long, WeakReference> m_list   = new SortedList<long, WeakReference>(32);
 
-        public static User Intern(this User user)
+        public static User IsInterned(this User user)
         {
             lock (m_user)
             {
@@ -29,12 +26,12 @@ namespace Limitation.Twitter.Containers
                     interned = m_user[user.Id].Target as User;
                     interned.Update(user);
                 }
-                
+
                 return user;
             }
         }
 
-        public static Status Intern(this Status status)
+        public static Status IsInterned(this Status status)
         {
             lock (m_status)
             {
@@ -54,7 +51,7 @@ namespace Limitation.Twitter.Containers
             }
         }
 
-        public static List Intern(this List list)
+        public static List IsInterned(this List list)
         {
             lock (m_list)
             {

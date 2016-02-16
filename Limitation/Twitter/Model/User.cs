@@ -163,7 +163,7 @@ namespace Limitation.Twitter.Model
         public Status Status
         {
             get { return m_status; }
-            set { m_status = value; OnPropertyChanged(); }
+            set { m_status = value.IsInterned(); OnPropertyChanged(); }
         }
 
         private int m_statusesCount;

@@ -1,18 +1,34 @@
-﻿using Limitation.Twitter.OAuth;
+﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
+using Limitation.Twitter.OAuth;
 using Limitation.Twitter.Streaming;
 
 namespace Limitation.Setting.Objects
 {
+    [DataContract]
     internal class Profile
     {
-        [SettingAttr]
+        [DataMember(Name = "token")]
         public string UserToken { get; set; }
 
-        [SettingAttr]
+        [DataMember(Name = "secret")]
         public string UserSecret { get; set; }
 
-        [SettingAttr]
-        public string Filter { get; set; }
+        private List<Rule> m_highlight;
+        [DataMember(Name = "highlight")]
+        public List<Rule> Highlight
+        {
+            get { return m_highlight ?? (m_highlight = new List<Rule>()); }
+            set { if (value != null) this.m_highlight = value; }
+        }
+
+        private List<Rule> m_filter;
+        [DataMember(Name = "filter")]
+        public List<Rule> Filter
+        {
+            get { return m_filter ?? (m_filter = new List<Rule>()); }
+            set { if (value != null) this.m_filter = value; }
+        }
 
         public int m_userid;
         public int UserId
@@ -48,5 +64,70 @@ namespace Limitation.Setting.Objects
                 return this.m_streaming ?? (this.m_streaming = new TwitterStreaming(this));
             }
         }
+    }
+    
+    [DataContract]
+    internal class Rule
+    {
+        [DataMember(Name = "name")]
+        public string RuleName { get; set; }
+
+        private List<DetailRule> m_detail;
+        [DataMember(Name = "rules")]
+        public List<DetailRule> Detail
+        {
+            get { return m_detail ?? (m_detail = new List<DetailRule>()); }
+            set { if (value != null) m_detail = value; }
+        }
+    }
+
+    [DataContract]
+    internal class DetailRule
+    {
+        [DataMember(Name = "return")]
+        public bool Return { get; set; }
+
+        [DataMember(Name = "text")]
+        public RuleTypes RuleType { get; set; }
+
+        [DataMember(Name = "value_type")]
+        public ValueTypes ValueType { get; set; }
+
+        [DataMember(Name = "match")]
+        public bool Match { get; set; }
+
+        [DataMember(Name = "mention")]
+        public bool Mention { get; set; }
+        
+        [DataMember(Name = "value")]
+        public string Value { get; set; }
+    }
+
+    [DataContract]
+    public enum RuleTypes
+    {
+        [EnumMember(Value = "text")]
+        Text,
+        [EnumMember(Value = "user_name")]
+        UserName,
+        [EnumMember(Value = "screen_name")]
+        ScreenName,
+        [EnumMember(Value = "user_id")]
+        UserId,
+        [EnumMember(Value = "hashtag")]
+        HashTag,
+        [EnumMember(Value = "via")]
+        Via,
+    }
+
+    [DataContract]
+    public enum ValueTypes
+    {
+        [EnumMember(Value = "regular")]
+        Regular,
+        [EnumMember(Value = "Wildcard")]
+        WildCard,
+        [EnumMember(Value = "regex")]
+        Regex,
     }
 }

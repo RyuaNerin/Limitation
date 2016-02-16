@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace Limitation.Twitter.Model
 {
@@ -40,7 +42,11 @@ namespace Limitation.Twitter.Model
 
         public void Update(T newObject)
         {
-            
+            var type = typeof(T);
+            foreach (var prop in type.GetProperties())
+            {
+                prop.SetValue(this, prop.GetValue(newObject, null));
+            }
         }
     }
 }

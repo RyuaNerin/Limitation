@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
@@ -63,8 +64,13 @@ namespace Limitation.Twitter.Model
         [DataMember(Name = "quoted_status_id")]
         public long QuotedStatusId { get; set; }
 
+        private Status m_quotedStatus;
         [DataMember(Name = "quoted_status")]
-        public Status QuotedStatus { get; set; }
+        public Status QuotedStatus
+        {
+            get { return m_quotedStatus; }
+            set { m_quotedStatus = value.IsInterned(); }
+        }
 
         private int m_retweetCount;
         [DataMember(Name = "retweet_count")]
@@ -82,8 +88,13 @@ namespace Limitation.Twitter.Model
             set { m_retweeted = value; OnPropertyChanged(); }
         }
 
+        private Status m_retweetedStatus;
         [DataMember(Name = "retweeted_status")]
-        public Status RetweetedStatus { get; set; }
+        public Status RetweetedStatus
+        {
+            get { return m_retweetedStatus; }
+            set { m_retweetedStatus = value.IsInterned(); }
+        }
 
         private static Regex m_sourceRegex = new Regex("^<a href=\"([^\"]+)\"(:? rel=\"\\\"nofollow\\\"\")?>(.+)<\\/a>$", RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
         private string m_source;
@@ -105,16 +116,31 @@ namespace Limitation.Twitter.Model
         [DataMember(Name = "text", IsRequired = true)]
         public string Text { get; set; }
     
+        private User m_user;
         [DataMember(Name = "user", IsRequired = true)]
-        public User User { get; set; }
+        public User User
+        {
+            get { return m_user; }
+            set { m_user = value.IsInterned(); }
+        }
 
         //////////////////////////////////////////////////
 
+        private User m_recipient;
         [DataMember(Name = "recipient")]
-        public User Recipient { get; set; }
+        public User Recipient
+        {
+            get { return m_recipient; }
+            set { m_recipient = value.IsInterned(); }
+        }
 
+        private User m_sender;
         [DataMember(Name = "sender")]
-        public User Sender { get; set; }
+        public User Sender
+        {
+            get { return m_sender; }
+            set { m_sender = value.IsInterned(); }
+        }
 
         [DataMember(Name = "current_user_retweet")]
         public CurrentUserRetweet CurrentUserRetweet { get; set; }

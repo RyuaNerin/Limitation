@@ -67,8 +67,13 @@ namespace Limitation.Twitter.Model
             set { m_subscriberCount = value; OnPropertyChanged(); }
         }
 
+        private User m_user;
         [DataMember(Name = "user")]
-        public User User { get; set; }
+        public User User
+        {
+            get { return m_user; }
+            set { m_user = value.IsInterned(); }
+        }
         
         [DataMember(Name = "id", IsRequired = true)]
         public override long Id { get; set; }

@@ -12,6 +12,9 @@
 
 ## LICENSE
 
-- GNU GENERAL PUBLIC LICENSE License v3.0 을 따라요. ([읽기](LICENSE.txt))
+- NU GENERAL PUBLIC LICENSE License v3.0 을 따라요. ([읽기](LICENSE.txt))
 
-- 사용된 라이브러리의 라이선스는 [여기](LICENSE/) 를 확인해주세요
+- 사용된 오픈소스 라이브러리
+ - 입맛대로 수정된 [MahApps.Metro v1.2.4 (Ms-Pl)](https://github.com/RyuaNerin/MahApps.Metro)
+
+ - Javascript .NET (nuget)
