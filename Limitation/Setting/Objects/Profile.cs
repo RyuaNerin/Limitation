@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 using Limitation.Twitter.OAuth;
 using Limitation.Twitter.Streaming;
@@ -14,20 +15,18 @@ namespace Limitation.Setting.Objects
         [DataMember(Name = "secret")]
         public string UserSecret { get; set; }
 
-        private List<Rule> m_highlight;
-        [DataMember(Name = "highlight")]
+        private List<Rule> m_highlight = new List<Rule>();
+        [DataMember(Name = "highlight", EmitDefaultValue = false)]
         public List<Rule> Highlight
         {
-            get { return m_highlight ?? (m_highlight = new List<Rule>()); }
-            set { if (value != null) this.m_highlight = value; }
+            get { return m_highlight; }
         }
 
-        private List<Rule> m_filter;
-        [DataMember(Name = "filter")]
+        private List<Rule> m_filter = new List<Rule>();
+        [DataMember(Name = "filter", EmitDefaultValue = false)]
         public List<Rule> Filter
         {
-            get { return m_filter ?? (m_filter = new List<Rule>()); }
-            set { if (value != null) this.m_filter = value; }
+            get { return m_filter; }
         }
 
         public int m_userid;
@@ -72,12 +71,11 @@ namespace Limitation.Setting.Objects
         [DataMember(Name = "name")]
         public string RuleName { get; set; }
 
-        private List<DetailRule> m_detail;
-        [DataMember(Name = "rules")]
+        private List<DetailRule> m_detail = new List<DetailRule>();
+        [DataMember(Name = "rules", EmitDefaultValue = false)]
         public List<DetailRule> Detail
         {
-            get { return m_detail ?? (m_detail = new List<DetailRule>()); }
-            set { if (value != null) m_detail = value; }
+            get { return m_detail; }
         }
     }
 
@@ -87,17 +85,18 @@ namespace Limitation.Setting.Objects
         [DataMember(Name = "return")]
         public bool Return { get; set; }
 
-        [DataMember(Name = "text")]
+        [DataMember(Name = "rule_type")]
         public RuleTypes RuleType { get; set; }
 
         [DataMember(Name = "value_type")]
         public ValueTypes ValueType { get; set; }
 
-        [DataMember(Name = "match")]
-        public bool Match { get; set; }
+        [DataMember(Name = "result")]
+        public bool Result { get; set; }
 
-        [DataMember(Name = "mention")]
-        public bool Mention { get; set; }
+        [DataMember(Name = "include_mention")]
+        [DefaultValue(false)]
+        public bool IncludeMention { get; set; }
         
         [DataMember(Name = "value")]
         public string Value { get; set; }

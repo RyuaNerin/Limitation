@@ -7,13 +7,9 @@ namespace Limitation.Setting.Objects
     [DataContract]
     internal class Proxy
     {
-        [DataMember(Name = "use_proxy")]
-        [DefaultValue(true)]
-        public bool UseProxy { get; set; }
-
-        [DataMember(Name = "use_system")]
-        [DefaultValue(true)]
-        public bool UseSystem { get; set; }
+        [DataMember(Name = "proxy_type")]
+        [DefaultValue(ProxyTypes.None)]
+        public ProxyTypes ProxyType { get; set; }
 
         [DataMember(Name = "host")]
         [DefaultValue(null)]
@@ -33,13 +29,13 @@ namespace Limitation.Setting.Objects
 
         public void SetProxy()
         {
-            if (!UseProxy)
+            if (this.ProxyType == ProxyTypes.None)
             {
                 HttpWebRequest.DefaultWebProxy = null;
             }
             else
             {
-                if (UseProxy)
+                if (this.ProxyType == ProxyTypes.System)
                     HttpWebRequest.DefaultWebProxy = WebRequest.GetSystemWebProxy();
                 else
                 {
@@ -51,5 +47,18 @@ namespace Limitation.Setting.Objects
                 }
             }
         }
+    }
+
+    [DataContract]
+    public enum ProxyTypes
+    {
+        [EnumMember(Value = "none")]
+        None,
+
+        [EnumMember(Value = "system")]
+        System,
+
+        [EnumMember(Value = "Manual")]
+        Manual
     }
 }

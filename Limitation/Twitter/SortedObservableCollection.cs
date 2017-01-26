@@ -8,21 +8,23 @@ namespace Limitation.Twitter
     {
         protected override void InsertItem(int index, T item)
         {
-            for (var i = 0; i < this.Count; i++)
+            int min = 0;
+            int max = this.Count - 1;
+            int mid = 0;
+
+            while (min < max)
             {
-                switch (Math.Sign(this[i].CompareTo(item)))
-                {
-                    case 0:
-                    case 1:
-                        base.InsertItem(i, item);
-                        return;
-                    case -1:
-                        break;
- 
+                mid = (min + max) / 2;
+
+                switch (this[mid].CompareTo(item))
+                {                    
+                    case  0: this[mid] = item;  return; // 같음
+                    case -1: min = mid + 1;     break; // Id 가 작음 -> 밑으로
+                    case  1: max = mid - 1;     break; // Id 가 큼 -> 위로
                 }
             }
 
-            base.InsertItem(Count, item);
+            base.InsertItem(mid, item);
         }
     }
 }

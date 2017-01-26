@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
@@ -41,44 +42,51 @@ namespace Limitation.Setting
 
         //////////////////////////////////////////////////
 
-        private List<Profile> m_profiles;
-        [DataMember(Name = "profiles")]
+        private List<Profile> m_profiles = new List<Profile>();
+        [DataMember(Name = "profiles", EmitDefaultValue = false)]
         public List<Profile> Profiles
         {
-            get { return m_profiles ?? (m_profiles = new List<Profile>()); }
-            set { if (value != null) m_profiles = value; }
+            get { return m_profiles; }
         }
 
-        private Proxy m_proxy;
-        [DataMember(Name = "proxy")]
+        private Proxy m_proxy = new Proxy();
+        [DataMember(Name = "proxy", EmitDefaultValue = false)]
         public Proxy Proxy
         {
-            get { return m_proxy ?? (m_proxy = new Proxy()); }
-            set { if (value != null) m_proxy = value; }
+            get { return m_proxy; }
         }
 
-        private List<TimeLine> m_etc;
-        [DataMember(Name = "timeline")]
+        private List<TimeLine> m_etc = new List<TimeLine>();
+        [DataMember(Name = "timeline", EmitDefaultValue = false)]
         public List<TimeLine> TimeLine
         {
-            get { return m_etc ?? (m_etc = new List<TimeLine>()); }
-            set { if (value != null) m_etc = value; }
+            get { return m_etc; }
         }
 
-        private Window m_window;
-        [DataMember(Name = "window")]
+        private Window m_window = new Window();
+        [DataMember(Name = "window", EmitDefaultValue = false)]
         public Window Window
         {
-            get { return m_window ?? (m_window = new Window()); }
-            set { if (value != null) m_window = value; }
+            get { return m_window; }
         }
 
-        private Design m_design;
-        [DataMember(Name = "design")]
+        private Design m_design = new Design();
+        [DataMember(Name = "design", EmitDefaultValue = false)]
         public Design Design
         {
-            get { return m_design ?? (m_design = new Design()); }
-            set { if (value != null) m_design = value; }
+            get { return m_design; }
         }
+
+        [DataMember(Name = "use_script")]
+        [DefaultValue(true)]
+        public bool UserScript { get; set; }
+
+        [DataMember(Name = "allow_multi_instance")]
+        [DefaultValue(false)]
+        public bool AllowMultipleInstance { get; set; }
+
+        [DataMember(Name = "tweeets_load_count")]
+        [DefaultValue(20)]
+        public int TweetsLoadCount { get; set; }
 	}
 }

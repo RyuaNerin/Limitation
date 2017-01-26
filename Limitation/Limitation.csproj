@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-    <AssemblyVersion>2016.2.16.25</AssemblyVersion>
+    <AssemblyVersion>2016.5.20.33</AssemblyVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">.\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
@@ -50,7 +50,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Uncommit\Limitation.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Limitation.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>
@@ -60,10 +60,6 @@
     <Reference Include="MahApps.Metro, Version=1.2.4.0, Culture=neutral, PublicKeyToken=df6e08c7cdc2292f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Library\MahApps.Metro\MahApps.Metro.dll</HintPath>
-    </Reference>
-    <Reference Include="Noesis.Javascript, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86" Condition="'$(PlatformTarget)' == 'x86'">
-      <HintPath>packages\Noesis.Javascript.0.7.1.0\lib\net40\x86\Noesis.Javascript.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -138,7 +134,6 @@
     <Compile Include="Twitter\TimeLine\TimeLineBase.cs" />
     <Compile Include="Twitter\TimeLine\TimeLineTypes.cs" />
     <Compile Include="Twitter\Utilities.cs" />
-    <Compile Include="Uncommit\TwitterToken.cs" />
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -150,7 +145,7 @@
     </Compile>
     <AppDesigner Include="Properties\" />
     <None Include="packages.config" />
-    <None Include="Uncommit\Limitation.snk" />
+    <None Include="Limitation.snk" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

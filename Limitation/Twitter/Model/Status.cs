@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
@@ -105,8 +104,8 @@ namespace Limitation.Twitter.Model
             set
             {
                 var m = m_sourceRegex.Match(value);
-                this.m_source = string.Intern(m.Groups[2].Value);
-                this.SourceUri = string.Intern(m.Groups[1].Value);
+                this.m_source = Uri.UnescapeDataString(string.Intern(m.Groups[2].Value));
+                this.SourceUri = Uri.UnescapeDataString(string.Intern(m.Groups[1].Value));
                 if (this.SourceUri.StartsWith("//")) this.SourceUri = "http:" + this.SourceUri;
             }
         }
