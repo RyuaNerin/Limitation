@@ -1,42 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
-using System.Text;
+using System;
+using Limitation.Setting.Objects;
+using Limitation.Twitter.Model;
+using Newtonsoft.Json;
 
 namespace Limitation.Twitter
 {
-    internal class Utilities
+    internal static class Utilities
     {
-        private static IDictionary<Type, DataContractJsonSerializer> m_table = new Dictionary<Type, DataContractJsonSerializer>();
-        private static DataContractJsonSerializerSettings m_serializerSetting = new DataContractJsonSerializerSettings { DateTimeFormat = new DateTimeFormat("ddd MMM dd HH:mm:ss zzzz yyyy")};
+        private static readonly JsonSerializerSettings JsonSetting;
+
+        static Utilities()
+        {
+            JsonSetting = new JsonSerializerSettings
+            {
+                DateFormatString = "ddd MMM dd HH:mm:ss zzzz yyyy"
+            };
+        }
 
         public static T ParseJsonObject<T>(string json)
-            where T: class
+            where T : class
         {
-            return ParseJson(typeof(T), json) as T;
+            return JsonConvert.DeserializeObject<T>(json, JsonSetting);
         }
         public static T[] ParseJsonArray<T>(string json)
             where T : class
         {
-            return ParseJson(typeof(T[]), json) as T[];
+            return JsonConvert.DeserializeObject<T[]>(json, JsonSetting);
         }
-        public static object ParseJson(Type type, string json)
-        {
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
-            {
-                DataContractJsonSerializer serializer;
-                lock (m_table)
-                {
-                    if (m_table.ContainsKey(type))
-                        serializer = Utilities.m_table[type];
-                    else
-                        Utilities.m_table.Add(type, serializer = new DataContractJsonSerializer(type, Utilities.m_serializerSetting));
-                }
 
-                return serializer.ReadObject(stream);
-            }
+
+        public static bool CheckFiltered(this Rule rule, Status status)
+        {
+            throw new NotImplementedException();
         }
     }
 }

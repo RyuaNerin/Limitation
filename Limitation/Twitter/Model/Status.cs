@@ -1,103 +1,75 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 
 namespace Limitation.Twitter.Model
 {
-    [DataContract]
+    [JsonObject]
 	[DebuggerDisplay("Status {Id} - @{User.ScreenName}: {Text}")]
-	internal class Status : BaseModel<Status>
+	internal class Status : TwitterObject<Status>
     {
-        [DataMember(Name = "created_at")]
-        public DateTime CreatedAt { get; set; }
 
-        [DataMember(Name = "entities")]
-        public StatusEntities Entities { get; set; }
-
-        private int m_favoriteCount;
-        [DataMember(Name = "favorite_count")]
-        public int FavoriteCount
-        {
-            get { return m_favoriteCount; }
-            set { m_favoriteCount = value; OnPropertyChanged(); }
-        }
-
-        private bool m_favorited;
-        [DataMember(Name = "favorited")]
-        public bool Favorited
-        {
-            get { return m_favorited; }
-            set { m_favorited = value; OnPropertyChanged(); }
-        }
-        
-        /// <summary>
-        /// none, low, medium
-        /// </summary>
-        [DataMember(Name = "filter_level")]
-        public FilterLevels FilterLevel { get; set; }
-
-        [DataContract]
-        public enum FilterLevels
-        {
-            [EnumMember(Value = "none")]    None,
-            [EnumMember(Value = "low")]     Low,
-            [EnumMember(Value = "medium")]  Medium
-        }
-        
-        [DataMember(Name = "id", IsRequired = true)]
+        [JsonProperty("id")]
         public override long Id { get; set; }
 
-        [DataMember(Name = "in_reply_to_screen_name")]
-        public string InReplyToScreenName { get; set; }
-
-        [DataMember(Name = "in_reply_to_status_id")]
+        [JsonProperty("in_reply_to_status_id")]
         public long InReplyToStatusId { get; set; }
 
-        [DataMember(Name = "in_reply_to_user_id")]
-        public long InReplyToUserId { get; set; }
+        [JsonProperty("user")]
+        public User User { get; set; }
 
-        [DataMember(Name = "possibly_sensitive")]
-        public bool PossiblySensitive { get; set; }
+        [JsonProperty("text")]
+        public string Text { get; set; }
 
-        [DataMember(Name = "quoted_status_id")]
+        [JsonProperty("extended_tweet")]
+        public ExtendedTweet ExtendedTweet { get; set; }
+
+        [JsonProperty("entities")]
+        public StatusEntities Entities { get; set; }
+
+        [JsonProperty("extended_entities")]
+        public StatusEntities ExtendedEntities { get; set; }
+
+        [JsonProperty("created_at")]
+        public DateTime CreatedAt { get; set; }
+        
+        ///////////////////////////////////////////////////////
+
+        [JsonProperty("retweeted")]
+        public bool Retweeted { get; set; }
+
+        [JsonProperty("retweeted_status")]
+        public Status RetweetedStatus { get; set; }
+
+        ///////////////////////////////////////////////////////
+
+        [JsonProperty("is_quote_status")]
+        public long IsQuoteStatus { get; set; }
+
+        [JsonProperty("quoted_status_id")]
         public long QuotedStatusId { get; set; }
+        
+        [JsonProperty("quoted_status")]
+        public Status QuotedStatus { get; set; }
 
-        private Status m_quotedStatus;
-        [DataMember(Name = "quoted_status")]
-        public Status QuotedStatus
-        {
-            get { return m_quotedStatus; }
-            set { m_quotedStatus = value.IsInterned(); }
-        }
+        ///////////////////////////////////////////////////////
 
-        private int m_retweetCount;
-        [DataMember(Name = "retweet_count")]
-        public int RetweetCount
-        {
-            get { return m_retweetCount; }
-            set { m_retweetCount = value; OnPropertyChanged(); }
-        }
+        [JsonProperty("favorited")]
+        public bool Favorited { get; set; }
 
-        private bool m_retweeted;
-        [DataMember(Name = "retweeted")]
-        public bool Retweeted
-        {
-            get { return m_retweeted; }
-            set { m_retweeted = value; OnPropertyChanged(); }
-        }
+        [JsonProperty("favorite_count")]
+        public int FavoriteCount { get; set; }
 
-        private Status m_retweetedStatus;
-        [DataMember(Name = "retweeted_status")]
-        public Status RetweetedStatus
-        {
-            get { return m_retweetedStatus; }
-            set { m_retweetedStatus = value.IsInterned(); }
-        }
+        ///////////////////////////////////////////////////////
+
+        [JsonProperty("truncated")]
+        public bool Truncated { get; set; }
 
         private static Regex m_sourceRegex = new Regex("^<a href=\"([^\"]+)\"(:? rel=\"\\\"nofollow\\\"\")?>(.+)<\\/a>$", RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
         private string m_source;
-        [DataMember(Name = "source")]
+        [JsonProperty("source")]
         public string Source
         {
             get { return m_source; }
@@ -110,138 +82,111 @@ namespace Limitation.Twitter.Model
             }
         }
 
-        public string SourceUri { get; set; }
-
-        [DataMember(Name = "text", IsRequired = true)]
-        public string Text { get; set; }
-    
-        private User m_user;
-        [DataMember(Name = "user", IsRequired = true)]
-        public User User
-        {
-            get { return m_user; }
-            set { m_user = value.IsInterned(); }
-        }
+        public string SourceUri { get; private set; }
 
         //////////////////////////////////////////////////
 
-        private User m_recipient;
-        [DataMember(Name = "recipient")]
-        public User Recipient
-        {
-            get { return m_recipient; }
-            set { m_recipient = value.IsInterned(); }
-        }
-
-        private User m_sender;
-        [DataMember(Name = "sender")]
-        public User Sender
-        {
-            get { return m_sender; }
-            set { m_sender = value.IsInterned(); }
-        }
-
-        [DataMember(Name = "current_user_retweet")]
+        [JsonProperty("current_user_retweet")]
         public CurrentUserRetweet CurrentUserRetweet { get; set; }
 
         //////////////////////////////////////////////////
-
-        private int m_isDeleted;
-        public int IsDeleted
-        {
-            get { return m_isDeleted; }
-            set { m_isDeleted = value; OnPropertyChanged(); }
-        }
-
-        private int m_isRetweetedByMe;
-        public int IsRetweetedByMe
-        {
-            get { return m_isRetweetedByMe; }
-            set { m_isRetweetedByMe = value; OnPropertyChanged(); }
-        }
-	}
-
-    [DataContract]
-    public class CurrentUserRetweet
-    {
-        [DataMember(Name = "id_str")]
-        public string Id;
+        
+        public int IsDeleted { get; set; }
+        
+        public int IsRetweetedByMe { get; set; }
     }
 
-    [DataContract]
+    [JsonObject]
+    public class CurrentUserRetweet
+    {
+        [JsonProperty("id_str")]
+        public string Id { get; set; }
+    }
+
+    [JsonObject]
+    public class ExtendedTweet
+    {
+        [JsonProperty("full_text")]
+        public string FullText { get; set; }
+
+        [JsonProperty("entities")]
+        public StatusEntities Entities { get; set; }
+    }
+
+    [JsonObject]
     public class StatusEntities
     {
-        [DataMember(Name = "urls")]
+        [JsonProperty("urls")]
         public UrlEntity[] Urls { get; set; }
 
-        [DataMember(Name = "user_mentions")]
+        [JsonProperty("user_mentions")]
         public MentionEntity[] Mentions { get; set; }
 
-        [DataMember(Name = "hashtags")]
+        [JsonProperty("hashtags")]
         public HashTagEntity[] HashTags { get; set; }
 
-        [DataMember(Name = "media")]
+        [JsonProperty("media")]
         public Media[] Media { get; set; }
     }
 
-    [DataContract]
+    [JsonObject]
     public class UrlEntity
     {
-        [DataMember(Name = "indices")]
+        [JsonProperty("indices")]
         public int[] Indices { get; set; }
 
-        [DataMember(Name = "url")]
+        [JsonProperty("url")]
         public string Url { get; set; }
 
-        [DataMember(Name = "display_url")]
+        [JsonProperty("display_url")]
         public string DisplayUrl { get; set; }
 
-        [DataMember(Name = "expanded_url")]
+        [JsonProperty("expanded_url")]
         public string ExpandedUrl { get; set; }
     }
 
-    [DataContract]
+    [JsonObject]
     public class MentionEntity
     {
-        [DataMember(Name = "indices")]
+        [JsonProperty("indices")]
         public int[] Indices { get; set; }
 
-        [DataMember(Name = "id_str")]
+        [JsonProperty("id_str")]
         public string Id { get; set; }
 
-        [DataMember(Name = "screen_name")]
+        [JsonProperty("screen_name")]
         public string ScreenName { get; set; }
 
-        [DataMember(Name = "name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
     }
 
-    [DataContract]
+    [JsonObject]
     public class HashTagEntity
     {
-        [DataMember(Name = "indices")]
+        [JsonProperty("indices")]
         public int[] Indices { get; set; }
 
-        [DataMember(Name = "text")]
+        [JsonProperty("text")]
         public string Text { get; set; }
     }
 
-    [DataContract]
+    [JsonObject]
     public class Media
     {
-        [DataMember(Name = "indices")]
+        [JsonProperty("indices")]
         public int[] Indices { get; set; }
 
-        [DataMember(Name = "url")]
+        [JsonProperty("url")]
         public string Url { get; set; }
 
-        [DataMember(Name = "display_url")]
+        [JsonProperty("display_url")]
         public string DisplayUrl { get; set; }
 
-        [DataMember(Name = "expanded_url")]
+        [JsonProperty("expanded_url")]
         public string ExpandedUrl { get; set; }
 
-        [DataMember(Name = "media_url")]
+        [JsonProperty("media_url")]
         public string MediaUrl { get; set; }
     }
 }

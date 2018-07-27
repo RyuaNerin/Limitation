@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using Limitation.Twitter.Model;
@@ -9,7 +9,6 @@ namespace Limitation.Twitter
     {
         private static SortedList<long, WeakReference> m_user   = new SortedList<long, WeakReference>(200);
         private static SortedList<long, WeakReference> m_status = new SortedList<long, WeakReference>(1024);
-        private static SortedList<long, WeakReference> m_list   = new SortedList<long, WeakReference>(32);
 
         public static User IsInterned(this User user)
         {
@@ -51,30 +50,9 @@ namespace Limitation.Twitter
             }
         }
 
-        public static List IsInterned(this List list)
-        {
-            lock (m_list)
-            {
-                List interned;
-
-                if (!m_user.ContainsKey(list.Id))
-                    m_list[list.Id] = new WeakReference(interned = list);
-                else if (!m_list[list.Id].IsAlive)
-                    m_list[list.Id].Target = (interned = list);
-                else
-                {
-                    interned = m_list[list.Id].Target as List;
-                    interned.Update(list);
-                }
-
-                return list;
-            }
-        }
-
         private static Timer m_cleanUpTimer = new Timer(Container.CleanUp, null, 3 * 60 * 1000, 3 * 60 * 1000);
         private static void CleanUp(object state)
         {
-            CleanUp(m_list);
             CleanUp(m_status);
             CleanUp(m_user);
         }

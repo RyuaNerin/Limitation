@@ -1,92 +1,91 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
+using System.Text;
+using System.Threading;
 using Limitation.Setting.Objects;
+using Newtonsoft.Json;
+using PropertyChanged;
 
 namespace Limitation.Setting
 {
     internal class SettingAttr : Attribute { }
 
-    [DataContract]
+    [JsonObject]
 	internal class Options
     {
-        public static Options Instance { get; private set; }
+        public static Options Instance { get; } = new Options();
 
-        private static DataContractJsonSerializer m_serializer = new DataContractJsonSerializer(typeof(Options));
-		private static readonly string SettingFilePath;
-		static Options()
-		{
-			SettingFilePath = Path.Combine(App.DirPath, "limitation.ini");
-            
-            try
-            {
-                using (var file = File.OpenRead(SettingFilePath))
-                    Options.Instance = m_serializer.ReadObject(file) as Options;
-            }
-            catch
-            { }
+        private static readonly string ConfigPath  = Path.ChangeExtension(App.DirPath, "Limitation.cfg");
+        private static readonly string ConfigPath2 = Path.ChangeExtension(App.DirPath, "Limitation.cfg.new");
+        private static readonly JsonSerializer Serializer = JsonSerializer.Create();
 
-            if (Options.Instance == null)
-                Options.Instance = new Options();
-
-            Options.Instance.Proxy.SetProxy();
-		}
-        public static void SaveSetting()
+        static Options()
         {
-            using (var file = File.OpenWrite(SettingFilePath))
-                m_serializer.WriteObject(file, Options.Instance);
+            //Serializer.Formatting = Formatting.Indented;
+
+            if (File.Exists(ConfigPath))
+            {
+                try
+                {
+                    using (var fs = File.OpenRead(ConfigPath))
+                    using (var sr = new StreamReader(fs, Encoding.UTF8))
+                    using (var br = new JsonTextReader(sr))
+                        Serializer.Populate(br, Instance);
+                }
+                catch
+                {
+                }
+            }
+        }
+
+        private static readonly object SaveSync = new object();
+        public static void Save()
+        {
+            if (Monitor.TryEnter(SaveSync, 0))
+            {
+                try
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(ConfigPath));
+
+                    using (var fs = File.OpenWrite(ConfigPath2))
+                    {
+                        fs.SetLength(0);
+
+                        using (var sr = new StreamWriter(fs, Encoding.UTF8))
+                        using (var br = new JsonTextWriter(sr))
+                            Serializer.Serialize(br, Instance);
+                    }
+
+                    File.Delete(ConfigPath);
+                    File.Move(ConfigPath2, ConfigPath);
+                }
+                catch
+                {
+                    File.Delete(ConfigPath2);
+                }
+                finally
+                {
+                    Monitor.Exit(SaveSync);
+                }
+            }
         }
 
         //////////////////////////////////////////////////
 
-        private List<Profile> m_profiles = new List<Profile>();
-        [DataMember(Name = "profiles", EmitDefaultValue = false)]
-        public List<Profile> Profiles
-        {
-            get { return m_profiles; }
-        }
+        [JsonProperty("profiles", DefaultValueHandling = DefaultValueHandling.Populate)]
+        [DoNotNotify]
+        public List<Profile> Profiles { get; } = new List<Profile>();
 
-        private Proxy m_proxy = new Proxy();
-        [DataMember(Name = "proxy", EmitDefaultValue = false)]
-        public Proxy Proxy
-        {
-            get { return m_proxy; }
-        }
+        [JsonProperty("window", DefaultValueHandling = DefaultValueHandling.Populate)]
+        [DoNotNotify]
+        public Window Window { get; } = new Window();
+        
+        [JsonProperty("design", DefaultValueHandling = DefaultValueHandling.Populate)]
+        [DoNotNotify]
+        public Design Design { get; } = new Design();
 
-        private List<TimeLine> m_etc = new List<TimeLine>();
-        [DataMember(Name = "timeline", EmitDefaultValue = false)]
-        public List<TimeLine> TimeLine
-        {
-            get { return m_etc; }
-        }
-
-        private Window m_window = new Window();
-        [DataMember(Name = "window", EmitDefaultValue = false)]
-        public Window Window
-        {
-            get { return m_window; }
-        }
-
-        private Design m_design = new Design();
-        [DataMember(Name = "design", EmitDefaultValue = false)]
-        public Design Design
-        {
-            get { return m_design; }
-        }
-
-        [DataMember(Name = "use_script")]
-        [DefaultValue(true)]
-        public bool UserScript { get; set; }
-
-        [DataMember(Name = "allow_multi_instance")]
-        [DefaultValue(false)]
-        public bool AllowMultipleInstance { get; set; }
-
-        [DataMember(Name = "tweeets_load_count")]
-        [DefaultValue(20)]
-        public int TweetsLoadCount { get; set; }
+        [JsonProperty("tweeets_load_count")]
+        public int TweetsLoadCount { get; set; } = 20;
 	}
 }

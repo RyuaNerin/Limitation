@@ -1,90 +1,73 @@
-﻿using System.ComponentModel;
-using System.Runtime.Serialization;
+using System.ComponentModel;
+using Newtonsoft.Json;
+using PropertyChanged;
 
 namespace Limitation.Setting.Objects
 {
-    [DataContract]
-    internal class Design
+    [JsonObject]
+    internal class Design : INotifyPropertyChanged
     {
-        private FontOption m_fontSize = new FontOption();
-        [DataMember(Name = "fontsize", EmitDefaultValue = false)]
-        public FontOption FontSize
-        {
-            get { return m_fontSize; }
-        }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        [DataMember(Name = "line_spacing")]
-        [DefaultValue(2)]
-        public int LineSpacing { get; set; }
+        [JsonProperty("fontsize", DefaultValueHandling = DefaultValueHandling.Populate)]
+        [DoNotNotify]
+        public FontOption FontSize { get; } = new FontOption();
 
-        [DataMember(Name = "square_avatar")]
-        [DefaultValue(true)]
-        public bool SquareAvatar { get; set; }
+        [JsonProperty("line_spacing")]
+        public int LineSpacing { get; set; } = 2;
 
-        [DataMember(Name = "view_tweets_limit")]
-        [DefaultValue(1000)]
-        public int ViewTweetsLimit { get; set; }
+        [JsonProperty("square_avatar")]
+        public bool SquareAvatar { get; set; } = true;
 
-        [DataMember(Name = "show_thumbnail")]
-        [DefaultValue(true)]
-        public bool ShowThumbnail { get; set; }
+        [JsonProperty("view_tweets_limit")]
+        public int ViewTweetsLimit { get; set; } = 1000;
 
-        [DataMember(Name = "thumbnail_size")]
-        [DefaultValue(60)]
-        public int ThumbnailSize { get; set; }
-        
-        [DataMember(Name = "data_format")]
-        [DefaultValue(DataFormats.Mixed)]
-        public DataFormats DataFormat { get; set; }
+        [JsonProperty("show_thumbnail")]
+        public bool ShowThumbnail { get; set; } = true;
 
-        [DataMember(Name = "display_name")]
-        [DefaultValue(DisplayNames.Mixed)]
-        public DisplayNames DisplayName { get; set; }
+        [JsonProperty("thumbnail_size")]
+        public int ThumbnailSize { get; set; } = 60;
 
-        [DataMember(Name = "tweet_height")]
-        [DefaultValue(40)]
-        public int TweetHeight { get; set; }
+        [JsonProperty("data_format")]
+        public DataFormats DataFormat { get; set; } = DataFormats.Mixed;
 
-        [DataMember(Name = "profile_size")]
-        [DefaultValue(32)]
-        public int ProfileSize { get; set; }
+        [JsonProperty("display_name")]
+        public DisplayNames DisplayName { get; set; } = DisplayNames.Mixed;
+
+        [JsonProperty("tweet_height")]
+        public int TweetHeight { get; set; } = 40;
+
+        [JsonProperty("profile_size")]
+        public int ProfileSize { get; set; } = 32;
     }
 
-    [DataContract]
-    internal class FontOption
+    [JsonObject]
+    internal class FontOption : INotifyPropertyChanged
     {
-        [DataMember(Name = "font")]
-        public string Font { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        [DataMember(Name = "display_name_size")]
-        [DefaultValue(11)]
-        public int NameSize { get; set; }
+        [JsonProperty("font")]
+        public string Font { get; set; } = "맑은 고딕";
 
-        [DataMember(Name = "body_size")]
-        [DefaultValue(11)]
-        public int BodySize { get; set; }
+        [JsonProperty("display_name_size")]
+        public int NameSize { get; set; } = 11;
+
+        [JsonProperty("body_size")]
+        public int BodySize { get; set; } = 11;
     }
     
-    [DataContract]
     public enum DataFormats
     {
-        [EnumMember(Value = "relative")]
         Relative,
-        [EnumMember(Value = "absoulte")]
         Absolute,
-        [EnumMember(Value = "mixed")]
         Mixed
     }
 
-
-    [DataContract]
+    
     public enum DisplayNames
     {
-        [EnumMember(Value = "name")]
         Name,
-        [EnumMember(Value = "screen_name")]
         ScreenName,
-        [EnumMember(Value = "mixed")]
         Mixed,
     }
 }

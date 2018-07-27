@@ -1,35 +1,32 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.Runtime.Serialization;
 using Limitation.Twitter.OAuth;
-using Limitation.Twitter.Streaming;
+using Newtonsoft.Json;
+using PropertyChanged;
 
 namespace Limitation.Setting.Objects
 {
-    [DataContract]
-    internal class Profile
+    [JsonObject]
+    internal class Profile : INotifyPropertyChanged
     {
-        [DataMember(Name = "token")]
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [JsonProperty("token")]
         public string UserToken { get; set; }
 
-        [DataMember(Name = "secret")]
+        [JsonProperty("secret")]
         public string UserSecret { get; set; }
 
-        private List<Rule> m_highlight = new List<Rule>();
-        [DataMember(Name = "highlight", EmitDefaultValue = false)]
-        public List<Rule> Highlight
-        {
-            get { return m_highlight; }
-        }
+        [JsonProperty("highlight", DefaultValueHandling = DefaultValueHandling.Populate)]
+        [DoNotNotify]
+        public List<Rule> Highlight { get; } = new List<Rule>();
 
-        private List<Rule> m_filter = new List<Rule>();
-        [DataMember(Name = "filter", EmitDefaultValue = false)]
-        public List<Rule> Filter
-        {
-            get { return m_filter; }
-        }
+        [JsonProperty("filter", DefaultValueHandling = DefaultValueHandling.Populate)]
+        [DoNotNotify]
+        public List<Rule> Filter { get; } = new List<Rule>();
 
         public int m_userid;
+        [DoNotNotify]
         public int UserId
         {
             get
@@ -47,86 +44,57 @@ namespace Limitation.Setting.Objects
         }
 
         private OAuth m_oauth;
-        public OAuth OAuth
-        {
-            get
-            {
-                return this.m_oauth ?? (this.m_oauth = new OAuth(App.AppToken, App.AppSecret));
-            }
-        }
-
-        private TwitterStreaming m_streaming;
-        public TwitterStreaming Streaming
-        {
-            get
-            {
-                return this.m_streaming ?? (this.m_streaming = new TwitterStreaming(this));
-            }
-        }
+        [DoNotNotify]
+        public OAuth OAuth => this.m_oauth ?? (this.m_oauth = new OAuth(App.AppToken, App.AppSecret));
     }
     
-    [DataContract]
+    [JsonObject]
     internal class Rule
     {
-        [DataMember(Name = "name")]
+        [JsonProperty("name")]
         public string RuleName { get; set; }
 
-        private List<DetailRule> m_detail = new List<DetailRule>();
-        [DataMember(Name = "rules", EmitDefaultValue = false)]
-        public List<DetailRule> Detail
-        {
-            get { return m_detail; }
-        }
+        [JsonProperty("rules", DefaultValueHandling = DefaultValueHandling.Populate)]
+        public List<DetailRule> Detail { get; } = new List<DetailRule>();
     }
 
-    [DataContract]
+    [JsonObject]
     internal class DetailRule
     {
-        [DataMember(Name = "return")]
+        [JsonProperty("return")]
         public bool Return { get; set; }
 
-        [DataMember(Name = "rule_type")]
+        [JsonProperty("rule_type")]
         public RuleTypes RuleType { get; set; }
 
-        [DataMember(Name = "value_type")]
+        [JsonProperty("value_type")]
         public ValueTypes ValueType { get; set; }
 
-        [DataMember(Name = "result")]
+        [JsonProperty("result")]
         public bool Result { get; set; }
 
-        [DataMember(Name = "include_mention")]
+        [JsonProperty("include_mention")]
         [DefaultValue(false)]
         public bool IncludeMention { get; set; }
         
-        [DataMember(Name = "value")]
+        [JsonProperty("value")]
         public string Value { get; set; }
     }
 
-    [DataContract]
     public enum RuleTypes
     {
-        [EnumMember(Value = "text")]
         Text,
-        [EnumMember(Value = "user_name")]
         UserName,
-        [EnumMember(Value = "screen_name")]
         ScreenName,
-        [EnumMember(Value = "user_id")]
         UserId,
-        [EnumMember(Value = "hashtag")]
         HashTag,
-        [EnumMember(Value = "via")]
         Via,
     }
 
-    [DataContract]
     public enum ValueTypes
     {
-        [EnumMember(Value = "regular")]
         Regular,
-        [EnumMember(Value = "Wildcard")]
         WildCard,
-        [EnumMember(Value = "regex")]
         Regex,
     }
 }

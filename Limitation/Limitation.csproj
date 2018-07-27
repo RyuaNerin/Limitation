@@ -66,20 +66,18 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PropertyChanged, Version=2.5.9.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
+      <HintPath>..\packages\PropertyChanged.Fody.2.5.9\lib\net452\PropertyChanged.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows">
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.1\System.Windows.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Library\MahApps.Metro\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
@@ -103,45 +101,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Setting\Objects\Design.cs" />
-    <Compile Include="Setting\Objects\TimeLine.cs" />
     <Compile Include="Setting\Objects\Profile.cs" />
     <Compile Include="Setting\Options.cs" />
-    <Compile Include="Setting\Objects\Proxy.cs" />
     <Compile Include="Setting\Objects\Window.cs" />
     <Compile Include="Twitter\Container.cs" />
-    <Compile Include="Twitter\Streaming\Model\StatusWithheld.cs" />
-    <Compile Include="Twitter\Streaming\TwitterStreamingMessage.cs" />
-    <Compile Include="Twitter\Streaming\Model\Events\QuotedTweet.cs" />
-    <Compile Include="Twitter\Streaming\Model\Events\ListUserUnsubscribed.cs" />
-    <Compile Include="Twitter\Streaming\Model\Events\ListUserSubscribed.cs" />
-    <Compile Include="Twitter\Streaming\Model\Events\ListMemberRemoved.cs" />
-    <Compile Include="Twitter\Streaming\Model\Events\ListMemberAdded.cs" />
-    <Compile Include="Twitter\Streaming\Model\Events\ListUpdated.cs" />
-    <Compile Include="Twitter\Streaming\Model\Events\ListDestroyed.cs" />
-    <Compile Include="Twitter\Streaming\Model\Events\ListCreated.cs" />
-    <Compile Include="Twitter\Streaming\Model\Events\Unfollow.cs" />
-    <Compile Include="Twitter\Streaming\Model\Events\Follow.cs" />
-    <Compile Include="Twitter\Streaming\Model\Events\Unfavorite.cs" />
-    <Compile Include="Twitter\Streaming\Model\Events\Favorite.cs" />
-    <Compile Include="Twitter\Streaming\Model\Events\Unblock.cs" />
-    <Compile Include="Twitter\Streaming\Model\Events\Block.cs" />
-    <Compile Include="Twitter\Streaming\Model\Events\UserDeauthorizesStream.cs" />
-    <Compile Include="Twitter\Streaming\Model\Events\UserUpdate.cs" />
-    <Compile Include="Twitter\Streaming\Model\BaseEvents.cs" />
-    <Compile Include="Twitter\Streaming\Model\Warning.cs" />
-    <Compile Include="Twitter\Streaming\Model\Disconnect.cs" />
-    <Compile Include="Twitter\Streaming\Model\UserWithheld.cs" />
-    <Compile Include="Twitter\Streaming\Model\Limit.cs" />
-    <Compile Include="Twitter\Streaming\Model\ScrubGeo.cs" />
-    <Compile Include="Twitter\Model\List.cs" />
     <Compile Include="Twitter\SortedObservableCollection.cs" />
-    <Compile Include="Twitter\Streaming\TwitterStreaming.cs" />
-    <Compile Include="Twitter\Streaming\Model\Delete.cs" />
     <Compile Include="Twitter\OAuth\OAuth.cs" />
     <Compile Include="Twitter\Model\BaseModel.cs" />
     <Compile Include="Twitter\Model\Status.cs" />
     <Compile Include="Twitter\Model\User.cs" />
-    <Compile Include="Twitter\Streaming\TwitterStreamingHandler.cs" />
     <Compile Include="Twitter\TimeLine\TimeLineBase.cs" />
     <Compile Include="Twitter\TimeLine\TimeLineTypes.cs" />
     <Compile Include="Twitter\Utilities.cs" />

@@ -1,33 +1,24 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Limitation.Twitter.Model
 {
-    internal interface BaseModel : IComparable
+    internal interface ITwitterObject : IComparable
     {
-        Type ModelType { get; }
         long Id { get; }
     }
 
-    internal abstract class BaseModel<T> : BaseModel, IComparable<T>, IEquatable<T>, INotifyPropertyChanged
-        where T : BaseModel
+    internal abstract class TwitterObject<T> : ITwitterObject, IComparable<T>, IEquatable<T>, INotifyPropertyChanged
+        where T : ITwitterObject
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public Type ModelType { get { return typeof(T); } }
-
         public abstract long Id { get; set; }
-
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            if (this.PropertyChanged != null)
-                this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         public int CompareTo(object obj)
         {
-            return this.GetType() == obj.GetType() ? this.CompareTo(obj as BaseModel) : 0;
+            return this.GetType() == obj.GetType() ? this.CompareTo(obj as ITwitterObject) : 0;
         }
         public bool Equals(T other)
         {

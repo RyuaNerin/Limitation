@@ -1,42 +1,23 @@
-﻿using System.ComponentModel;
-using System.Runtime.Serialization;
-using Limitation.Windows;
+using System.ComponentModel;
+using Newtonsoft.Json;
 
 namespace Limitation.Setting.Objects
 {
-    [DataContract]
-    internal class Window
+    [JsonObject]
+    internal class Window : INotifyPropertyChanged
     {
-        private long m_x = -1;
-        [DataMember(Name = "x")]
-        public int X
-        {
-            get { return (int)MainWindow.Instance.Left; }
-            set { this.m_x = value; }
-        }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        private long m_y = -1;
-        [DataMember(Name = "y")]
-        public int Y
-        {
-            get { return (int)MainWindow.Instance.Top; }
-            set { this.m_y = value; }
-        }
-
-        private long m_w = -1;
-        [DataMember(Name = "w")]
-        public int W
-        {
-            get { return (int)MainWindow.Instance.Width; }
-            set { this.m_w = value; }
-        }
-
-        private long m_h = -1;
-        [DataMember(Name = "h")]
-        public int H
-        {
-            get { return (int)MainWindow.Instance.Height; }
-            set { this.m_h = value; }
-        }
+        [JsonProperty("x")]
+        public double Left { get; set; }
+        
+        [JsonProperty("y")]
+        public double Top { get; set; }
+        
+        [JsonProperty("w")]
+        public double Width { get; set; }
+        
+        [JsonProperty("h")]
+        public double Height { get; set; }
     }
 }
