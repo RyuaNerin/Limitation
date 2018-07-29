@@ -79,6 +79,7 @@
     <Reference Include="System.Windows">
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.1\System.Windows.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -92,6 +93,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\IsNotNullConverter.cs" />
+    <Compile Include="Helpers\ClipboardMonitor.cs" />
+    <Compile Include="Helpers\Explorer.cs" />
+    <Compile Include="Twitter\TimeLine\MentionTimeLine.cs" />
+    <Compile Include="Converters\ExpandTweetConverter.cs" />
+    <Compile Include="Windows\Models\MainWindowModel.cs" />
+    <Compile Include="Windows\PinWindow.xaml.cs">
+      <DependentUpon>PinWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -110,6 +120,7 @@
     <Compile Include="Twitter\Model\BaseModel.cs" />
     <Compile Include="Twitter\Model\Status.cs" />
     <Compile Include="Twitter\Model\User.cs" />
+    <Compile Include="Twitter\TimeLine\HomeTimeLine.cs" />
     <Compile Include="Twitter\TimeLine\TimeLineBase.cs" />
     <Compile Include="Twitter\TimeLine\TimeLineTypes.cs" />
     <Compile Include="Twitter\Utilities.cs" />
@@ -118,9 +129,13 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Windows\Theme\TweetControlTheme.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Windows\Themes\TweetControlTheme.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\PinWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

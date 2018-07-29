@@ -9,15 +9,13 @@ using PropertyChanged;
 
 namespace Limitation.Setting
 {
-    internal class SettingAttr : Attribute { }
-
     [JsonObject]
 	internal class Options
     {
         public static Options Instance { get; } = new Options();
 
-        private static readonly string ConfigPath  = Path.ChangeExtension(App.DirPath, "Limitation.cfg");
-        private static readonly string ConfigPath2 = Path.ChangeExtension(App.DirPath, "Limitation.cfg.new");
+        private static readonly string ConfigPath  = Path.ChangeExtension(App.ExePath, "Limitation.cfg");
+        private static readonly string ConfigPath2 = Path.ChangeExtension(App.ExePath, "Limitation.cfg.new");
         private static readonly JsonSerializer Serializer = JsonSerializer.Create();
 
         static Options()
@@ -79,11 +77,11 @@ namespace Limitation.Setting
 
         [JsonProperty("window", DefaultValueHandling = DefaultValueHandling.Populate)]
         [DoNotNotify]
-        public Window Window { get; } = new Window();
+        public WindowOption Window { get; } = new WindowOption();
         
         [JsonProperty("design", DefaultValueHandling = DefaultValueHandling.Populate)]
         [DoNotNotify]
-        public Design Design { get; } = new Design();
+        public DesignOption Design { get; } = new DesignOption();
 
         [JsonProperty("tweeets_load_count")]
         public int TweetsLoadCount { get; set; } = 20;

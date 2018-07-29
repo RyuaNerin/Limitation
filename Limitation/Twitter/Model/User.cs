@@ -1,21 +1,17 @@
 using System;
 using System.Diagnostics;
 using Newtonsoft.Json;
+using PropertyChanged;
 
-namespace Limitation.Twitter.Model
+namespace Limitation.Twitter.BaseModel
 {
     [JsonObject]
-	[DebuggerDisplay("User {Id} - @{ScreenName}")]
+    [AddINotifyPropertyChangedInterface]
+    [DebuggerDisplay("User {Id} - @{ScreenName}")]
 	internal class User : TwitterObject<User>
     {
         [JsonProperty("created_at")]
         public DateTime CreatedAt { get; set; }
-        
-        [JsonProperty("default_profile")]
-        public bool DefaultProfile { get; set; }
-        
-        [JsonProperty("default_profile_image")]
-        public bool DefaultProfileImage { get; set; }
 
         [JsonProperty("description")]
         public string Description { get; set; }
@@ -47,7 +43,7 @@ namespace Limitation.Twitter.Model
         [JsonProperty("profile_banner_url")]
         public string ProfileBannerUrl { get; set; }
 
-        [JsonProperty("profile_image_url_http")]
+        [JsonProperty("profile_image_url")]
         public string ProfileImageUrl { get; set; }
         
         [JsonProperty("protected")]
@@ -64,7 +60,12 @@ namespace Limitation.Twitter.Model
         
         [JsonProperty("verified")]
         public bool Verified { get; set; }
-	}
+
+        //////////////////////////////////////////////////
+
+        [DependsOn("ScreenName", "Name")]
+        public string MixedName => $"{this.Name} (@{this.ScreenName})";
+    }
 
     [JsonObject]
     public class UserEntities

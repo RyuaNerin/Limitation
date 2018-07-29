@@ -7,10 +7,9 @@ using PropertyChanged;
 namespace Limitation.Setting.Objects
 {
     [JsonObject]
-    internal class Profile : INotifyPropertyChanged
+    [AddINotifyPropertyChangedInterface]
+    internal class Profile
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         [JsonProperty("token")]
         public string UserToken { get; set; }
 
@@ -26,6 +25,7 @@ namespace Limitation.Setting.Objects
         public List<Rule> Filter { get; } = new List<Rule>();
 
         public int m_userid;
+        [JsonIgnore]
         [DoNotNotify]
         public int UserId
         {
@@ -45,7 +45,8 @@ namespace Limitation.Setting.Objects
 
         private OAuth m_oauth;
         [DoNotNotify]
-        public OAuth OAuth => this.m_oauth ?? (this.m_oauth = new OAuth(App.AppToken, App.AppSecret));
+        [JsonIgnore]
+        public OAuth OAuth => this.m_oauth ?? (this.m_oauth = new OAuth(App.AppToken, App.AppSecret, this.UserToken, this.UserSecret));
     }
     
     [JsonObject]

@@ -2,9 +2,47 @@
         x:ClassModifier="internal"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Height="350"
-        Width="525">
-    <Grid>
-        
-    </Grid>
+        Title="Limitation"
+        Left="{Binding Path=Options.Window.Left, Mode=TwoWay}"
+        Top="{Binding Path=Options.Window.Top, Mode=TwoWay}"
+        Width="{Binding Path=Options.Window.Width, Mode=TwoWay}"
+        Height="{Binding Path=Options.Window.Height, Mode=TwoWay}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/TweetControlTheme.xaml" />                
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+        </Menu>
+
+        <Button DockPanel.Dock="Top"
+                Content="로그인"
+                Click="Button_Click"
+                Height="40" />
+
+        <Button DockPanel.Dock="Top"
+                Content="불러오기"
+                Click="LoadTweet_Click"
+                Height="40" />
+
+        <Button DockPanel.Dock="Top"
+                Content="탐라"
+                Click="Home_Click"
+                Height="40" />
+
+        <Button DockPanel.Dock="Top"
+                Content="멘션"
+                Click="Mention_Click"
+                Height="40" />
+
+        <Grid>
+            <TreeView Style="{StaticResource TweetViewer}"
+                      ItemsSource="{Binding Path=CurrentTimeline.TweetObjects}">
+
+            </TreeView>
+        </Grid>
+    </DockPanel>
 </Window>

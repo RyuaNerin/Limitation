@@ -1,23 +1,22 @@
-using System.ComponentModel;
 using Newtonsoft.Json;
+using PropertyChanged;
 
 namespace Limitation.Setting.Objects
 {
     [JsonObject]
-    internal class Window : INotifyPropertyChanged
+    [AddINotifyPropertyChangedInterface]
+    internal class WindowOption
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         [JsonProperty("x")]
         public double Left { get; set; }
         
         [JsonProperty("y")]
         public double Top { get; set; }
-        
+
         [JsonProperty("w")]
-        public double Width { get; set; }
-        
+        public double Width { get; set; } = 400;
+
         [JsonProperty("h")]
-        public double Height { get; set; }
+        public double Height { get; set; } = 500;
     }
 }

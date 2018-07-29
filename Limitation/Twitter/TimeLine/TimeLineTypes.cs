@@ -4,7 +4,7 @@ namespace Limitation.Twitter.TimeLine
     {
         Home,
         Mention,
-        DM,
+        DirectMessage,
         Favorite,
         Bio,
     }

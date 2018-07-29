@@ -1,62 +1,82 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Limitation.Twitter.Model;
+using Limitation.Twitter.BaseModel;
 
 namespace Limitation.Twitter
 {
     internal static class Container
     {
-        private static SortedList<long, WeakReference> m_user   = new SortedList<long, WeakReference>(200);
-        private static SortedList<long, WeakReference> m_status = new SortedList<long, WeakReference>(1024);
+        private static SortedList<long, WeakReference<User>> UserCollection   = new SortedList<long, WeakReference<User>>(200);
+        private static SortedList<long, WeakReference<Status>> StatusCollection = new SortedList<long, WeakReference<Status>>(1024);
 
-        public static User IsInterned(this User user)
+        public static IEnumerable<Status> ToInterned(this IEnumerable<Status> statuses)
         {
-            lock (m_user)
-            {
-                User interned;
-
-                if (!m_user.ContainsKey(user.Id))
-                    m_user[user.Id] = new WeakReference(interned = user);
-                else if (!m_user[user.Id].IsAlive)
-                    m_user[user.Id].Target = (interned = user);
-                else
-                {
-                    interned = m_user[user.Id].Target as User;
-                    interned.Update(user);
-                }
-
-                return user;
-            }
+            foreach (var item in statuses)
+                yield return item.Intern();
         }
 
-        public static Status IsInterned(this Status status)
+        public static Status Intern(this Status status)
         {
-            lock (m_status)
-            {
-                Status interned;
+            bool newItem = false;
+            Status interned;
 
-                if (!m_status.ContainsKey(status.Id))
-                    m_status[status.Id] = new WeakReference(interned = status);
-                else if (!m_status[status.Id].IsAlive)
-                    m_status[status.Id].Target = (interned = status);
+            lock (StatusCollection)
+            {
+                if (!StatusCollection.ContainsKey(status.Id))
+                {
+                    StatusCollection[status.Id] = new WeakReference<Status>(interned = status);
+                    newItem = true;
+                }
                 else
                 {
-                    interned = m_status[status.Id].Target as Status;
-                    interned.Update(status);
+                    if (!StatusCollection[status.Id].TryGetTarget(out interned))
+                        StatusCollection[status.Id].SetTarget(interned = status);
                 }
-
-                return status;
             }
+
+            if (newItem)
+            {
+                status.User = status.User.Intern();
+
+                if (interned.QuotedStatus != null)
+                    interned.QuotedStatus = interned.QuotedStatus.Intern();
+
+                if (interned.RetweetedStatus != null)
+                    interned.RetweetedStatus = interned.RetweetedStatus.Intern();
+            }
+
+            return interned;
         }
 
-        private static Timer m_cleanUpTimer = new Timer(Container.CleanUp, null, 3 * 60 * 1000, 3 * 60 * 1000);
+        public static User Intern(this User user)
+        {
+            User interned;
+
+            lock (UserCollection)
+            {
+                if (!UserCollection.ContainsKey(user.Id))
+                {
+                    UserCollection[user.Id] = new WeakReference<User>(interned = user);
+                }
+                else
+                {
+                    if (!UserCollection[user.Id].TryGetTarget(out interned))
+                        UserCollection[user.Id].SetTarget(interned = user);
+                }
+            }
+
+            return interned;
+        }
+
+        private static readonly Timer CleanUpTimer = new Timer(CleanUp, null, 3 * 60 * 1000, 3 * 60 * 1000);
         private static void CleanUp(object state)
         {
-            CleanUp(m_status);
-            CleanUp(m_user);
+            CleanUpList(StatusCollection);
+            CleanUpList(UserCollection);
         }
-        private static void CleanUp(SortedList<long, WeakReference> lst)
+        private static void CleanUpList<T>(SortedList<long, WeakReference<T>> lst)
+            where T: class, ITwitterObject
         {
             int i;
             long id;
@@ -67,7 +87,7 @@ namespace Limitation.Twitter
                 while (i < lst.Count)
                 {
                     id = lst.Keys[i];
-                    if (!lst[id].IsAlive)
+                    if (!lst[id].TryGetTarget(out T t))
                         lst.Remove(id);
                     else
                         i++;

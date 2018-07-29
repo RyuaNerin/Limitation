@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -39,15 +39,33 @@ namespace Limitation.Twitter.OAuth
             this.User = new TokenPair(userToken, userSecret);
         }
 
-        public TokenPair App { get; private set; }
-        public TokenPair User { get; private set; }
+        public TokenPair App { get; }
+        public TokenPair User { get; }
 
         private static string[] oauth_array = { "oauth_consumer_key", "oauth_version", "oauth_nonce", "oauth_signature", "oauth_signature_method", "oauth_timestamp", "oauth_token", "oauth_callback" };
 
-        public WebRequest CreateWebRequest(string method, string url, object data = null)
+        public string GetResponse(string method, Uri uri, object data = null)
+        {
+            var req = CreateWebRequest(method, uri, data);
+            
+            if (method == "POST" && data != null)
+            {
+                var buff = Encoding.UTF8.GetBytes(ToString(data, true));
+
+                if (buff.Length > 0)
+                {
+                    req.ContentType = "application/x-www-form-urlencoded";
+                    req.GetRequestStream().Write(buff, 0, buff.Length);
+                }
+            }
+
+            using (var res = req.GetResponse())
+            using (var reader = new StreamReader(res.GetResponseStream()))
+                return reader.ReadToEnd();
+        }
+        public WebRequest CreateWebRequest(string method, Uri uri, object data = null)
         {
             method = method.ToUpper();
-            var uri = new Uri(url);
             var dic = new SortedDictionary<string, object>();
 
             if (!string.IsNullOrEmpty(uri.Query))
@@ -93,9 +111,6 @@ namespace Limitation.Twitter.OAuth
             req.UserAgent = "Limitation";
             req.Headers.Add("Authorization", sbData.ToString());
 
-            if (method == "POST")
-                req.ContentType = "application/x-www-form-urlencoded";
-
             return req;
         }
 
@@ -130,7 +145,7 @@ namespace Limitation.Twitter.OAuth
             return sb.ToString();
         }
 
-        public static string ToString(object values)
+        public static string ToString(object values, bool skipOauth = false)
         {
             var sb = new StringBuilder();
 
@@ -143,6 +158,9 @@ namespace Limitation.Twitter.OAuth
 
                 name  = p.Name;
                 value = p.GetValue(values, null);
+
+                if (skipOauth && Array.IndexOf<string>(oauth_array, name) >= 0)
+                    continue;
 
                 if (value is bool)
                     sb.AppendFormat("{0}={1}&", name, (bool)value ? "true" : "false");
@@ -218,18 +236,14 @@ namespace Limitation.Twitter.OAuth
         {
             try
             {
-                var req = CreateWebRequest("POST", "https://api.twitter.com/oauth/request_token");
-                using (var res = req.GetResponse())
-                using (var reader = new StreamReader(res.GetResponseStream()))
+                var obj = new { oauth_callback = "oob" };
+                var str = GetResponse("POST", new Uri("https://api.twitter.com/oauth/request_token"), obj);
+
+                return new TokenPair
                 {
-                    var str = reader.ReadToEnd();
-
-                    var token = new TokenPair();
-                    token.Token  = Regex.Match(str, @"oauth_token=([^&]+)").Groups[1].Value;
-                    token.Secret = Regex.Match(str, @"oauth_token_secret=([^&]+)").Groups[1].Value;
-
-                    return token;
-                }
+                    Token  = Regex.Match(str, @"oauth_token=([^&]+)").Groups[1].Value,
+                    Secret = Regex.Match(str, @"oauth_token_secret=([^&]+)").Groups[1].Value
+                };
             }
             catch
             {
@@ -242,22 +256,15 @@ namespace Limitation.Twitter.OAuth
             try
             {
                 var obj = new { oauth_verifier = verifier };
-                var buff = Encoding.UTF8.GetBytes(OAuth.ToString(obj));
+                var str = GetResponse("POST", new Uri("https://api.twitter.com/oauth/access_token"), obj);
 
-                var req = CreateWebRequest("POST", "https://api.twitter.com/oauth/access_token", obj);
-                req.GetRequestStream().Write(buff, 0, buff.Length);
-
-                using (var res = req.GetResponse())
-                using (var reader = new StreamReader(res.GetResponseStream()))
+                var token = new TokenPair
                 {
-                    var str = reader.ReadToEnd();
+                    Token  = Regex.Match(str, @"oauth_token=([^&]+)").Groups[1].Value,
+                    Secret = Regex.Match(str, @"oauth_token_secret=([^&]+)").Groups[1].Value
+                };
 
-                    var token = new TokenPair();
-                    token.Token  = Regex.Match(str, @"oauth_token=([^&]+)").Groups[1].Value;
-                    token.Secret = Regex.Match(str, @"oauth_token_secret=([^&]+)").Groups[1].Value;
-
-                    return token;
-                }
+                return token;
             }
             catch
             {
