@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -72,15 +71,12 @@ namespace Limitation.Setting
         //////////////////////////////////////////////////
 
         [JsonProperty("profiles", DefaultValueHandling = DefaultValueHandling.Populate)]
-        [DoNotNotify]
         public List<Profile> Profiles { get; } = new List<Profile>();
 
         [JsonProperty("window", DefaultValueHandling = DefaultValueHandling.Populate)]
-        [DoNotNotify]
         public WindowOption Window { get; } = new WindowOption();
         
         [JsonProperty("design", DefaultValueHandling = DefaultValueHandling.Populate)]
-        [DoNotNotify]
         public DesignOption Design { get; } = new DesignOption();
 
         [JsonProperty("tweeets_load_count")]

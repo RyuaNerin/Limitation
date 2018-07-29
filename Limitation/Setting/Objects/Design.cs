@@ -22,6 +22,7 @@ namespace Limitation.Setting.Objects
         public bool SquareAvatar { get; set; } = false;
 
         [JsonProperty("view_tweets_limit")]
+        [DoNotNotify]
         public int ViewTweetsLimit { get; set; } = 1000;
 
         [JsonProperty("expaned_tweet")]

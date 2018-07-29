@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Limitation.Twitter.OAuth
+namespace Limitation.Twitter
 {
     public class TokenPair
     {
@@ -229,46 +229,6 @@ namespace Limitation.Twitter.OAuth
                     dic[p.Name] = Uri.EscapeDataString(Convert.ToString(value));
 
 
-            }
-        }
-
-        public TokenPair RequestToken()
-        {
-            try
-            {
-                var obj = new { oauth_callback = "oob" };
-                var str = GetResponse("POST", new Uri("https://api.twitter.com/oauth/request_token"), obj);
-
-                return new TokenPair
-                {
-                    Token  = Regex.Match(str, @"oauth_token=([^&]+)").Groups[1].Value,
-                    Secret = Regex.Match(str, @"oauth_token_secret=([^&]+)").Groups[1].Value
-                };
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        public TokenPair AccessToken(string verifier)
-        {
-            try
-            {
-                var obj = new { oauth_verifier = verifier };
-                var str = GetResponse("POST", new Uri("https://api.twitter.com/oauth/access_token"), obj);
-
-                var token = new TokenPair
-                {
-                    Token  = Regex.Match(str, @"oauth_token=([^&]+)").Groups[1].Value,
-                    Secret = Regex.Match(str, @"oauth_token_secret=([^&]+)").Groups[1].Value
-                };
-
-                return token;
-            }
-            catch
-            {
-                return null;
             }
         }
     }

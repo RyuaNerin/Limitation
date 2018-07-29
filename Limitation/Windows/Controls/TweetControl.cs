@@ -1,23 +1,36 @@
 using System;
+using System.ComponentModel;
 using Limitation.Twitter.BaseModel;
+using Limitation.Twitter.Objects;
 using PropertyChanged;
 
 namespace Limitation.Windows.Controls
 {
-    [AddINotifyPropertyChangedInterface]
-    internal class TweetControl : IComparable<TweetControl>, IEquatable<TweetControl>
+    internal class TweetControl : IComparable<TweetControl>, IEquatable<TweetControl>, INotifyPropertyChanged
     {
-        public TweetControl(Status status)
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public TweetControl(StatusObject status)
         {
             this.TwitterStatus = status;
         }
 
-        public Status TwitterStatus { get; }
+        public StatusObject TwitterStatus { get; }
 
-        public Status[] SubStatus { get; set; }
+        public StatusObject[] SubStatus { get; set; }
 
-        public bool IsExpanded { get; set; }
         public bool IsSelected { get; set; }
+
+        private bool m_isExpanded = false;
+        public bool IsExpanded
+        {
+            get => m_isExpanded;
+            set
+            {
+                this.m_isExpanded = true;
+                
+            }
+        }
 
         public int CompareTo(object obj)
         {

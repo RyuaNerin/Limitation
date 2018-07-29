@@ -1,8 +1,9 @@
 using System.Windows;
 using Limitation.Helpers;
 using Limitation.Setting.Objects;
-using Limitation.Twitter.OAuth;
+using Limitation.Twitter;
 using Limitation.Windows.Models;
+using Limitation.Twitter.Api;
 
 namespace Limitation.Windows
 {
@@ -27,7 +28,7 @@ namespace Limitation.Windows
             if (this.Model.Options.Profiles.Count == 0)
             {
                 var oauth = new OAuth(App.AppToken, App.AppSecret);
-                var rt = oauth.RequestToken();
+                var rt = oauth.Oauth_RequestToken();
                 if (rt != null)
                 {
                     Explorer.OpenUri("https://api.twitter.com/oauth/authorize?force_login=true&oauth_token=" + rt.Token);
@@ -40,7 +41,7 @@ namespace Limitation.Windows
                     if (wnd.ShowDialog() ?? false)
                     {
                         oauth = new OAuth(App.AppToken, App.AppSecret, rt.Token, rt.Secret);
-                        var ut = oauth.AccessToken(wnd.PinText);
+                        var ut = oauth.Oauth_AccessToken(wnd.PinText);
 
                         if (ut != null)
                         {

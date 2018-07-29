@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
-using Limitation.Twitter.OAuth;
+using Limitation.Twitter;
 using Newtonsoft.Json;
 using PropertyChanged;
 

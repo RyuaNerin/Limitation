@@ -96,8 +96,13 @@
     <Compile Include="Converters\IsNotNullConverter.cs" />
     <Compile Include="Helpers\ClipboardMonitor.cs" />
     <Compile Include="Helpers\Explorer.cs" />
+    <Compile Include="Twitter\Api\Statuses.cs" />
+    <Compile Include="Twitter\JsonParser.cs" />
+    <Compile Include="Twitter\Objects\StatusObject.cs" />
+    <Compile Include="Twitter\Objects\UserObject.cs" />
     <Compile Include="Twitter\TimeLine\MentionTimeLine.cs" />
     <Compile Include="Converters\ExpandTweetConverter.cs" />
+    <Compile Include="Twitter\Api\ApiOAuth.cs" />
     <Compile Include="Windows\Models\MainWindowModel.cs" />
     <Compile Include="Windows\PinWindow.xaml.cs">
       <DependentUpon>PinWindow.xaml</DependentUpon>
@@ -114,16 +119,15 @@
     <Compile Include="Setting\Objects\Profile.cs" />
     <Compile Include="Setting\Options.cs" />
     <Compile Include="Setting\Objects\Window.cs" />
-    <Compile Include="Twitter\Container.cs" />
+    <Compile Include="Twitter\InternedHelper.cs" />
     <Compile Include="Twitter\SortedObservableCollection.cs" />
-    <Compile Include="Twitter\OAuth\OAuth.cs" />
-    <Compile Include="Twitter\Model\BaseModel.cs" />
-    <Compile Include="Twitter\Model\Status.cs" />
-    <Compile Include="Twitter\Model\User.cs" />
+    <Compile Include="Twitter\OAuth.cs" />
+    <Compile Include="Twitter\BaseModel\BaseModel.cs" />
+    <Compile Include="Twitter\BaseModel\BaseStatus.cs" />
+    <Compile Include="Twitter\BaseModel\BaseUser.cs" />
     <Compile Include="Twitter\TimeLine\HomeTimeLine.cs" />
     <Compile Include="Twitter\TimeLine\TimeLineBase.cs" />
     <Compile Include="Twitter\TimeLine\TimeLineTypes.cs" />
-    <Compile Include="Twitter\Utilities.cs" />
     <Compile Include="Windows\Controls\TweetControl.cs" />
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

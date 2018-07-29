@@ -25,7 +25,7 @@ namespace Limitation.Twitter.TimeLine
 
             var str = this.Profile.OAuth.GetResponse("GET", uri);
 
-            this.Add(str.ParseJsonArray<Status>());
+            this.Add(str.ParseJsonArray<BaseStatus>());
         }
     }
 }

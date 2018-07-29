@@ -1,16 +1,14 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Text.RegularExpressions;
-using System.Linq;
+using Limitation.Twitter.Objects;
 using Newtonsoft.Json;
-using PropertyChanged;
 
 namespace Limitation.Twitter.BaseModel
 {
     [JsonObject]
     [DebuggerDisplay("Status {Id} - @{User.ScreenName}: {Text}")]
-	internal class Status : TwitterObject<Status>, INotifyPropertyChanged
+	internal abstract class BaseStatus : TwitterObject<BaseStatus>, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -21,7 +19,7 @@ namespace Limitation.Twitter.BaseModel
         public long InReplyToStatusId { get; set; }
 
         [JsonProperty("user")]
-        public User User { get; set; }
+        public UserObject User { get; set; }
 
         [JsonProperty("text")]
         public string Text { get; set; }
@@ -49,7 +47,7 @@ namespace Limitation.Twitter.BaseModel
         public bool Retweeted { get; set; }
 
         [JsonProperty("retweeted_status")]
-        public Status RetweetedStatus { get; set; }
+        public BaseStatus RetweetedStatus { get; set; }
 
         ///////////////////////////////////////////////////////
 
@@ -60,7 +58,7 @@ namespace Limitation.Twitter.BaseModel
         public long QuotedStatusId { get; set; }
         
         [JsonProperty("quoted_status")]
-        public Status QuotedStatus { get; set; }
+        public BaseStatus QuotedStatus { get; set; }
 
         ///////////////////////////////////////////////////////
 
@@ -72,73 +70,13 @@ namespace Limitation.Twitter.BaseModel
 
         ///////////////////////////////////////////////////////
 
-        private static Regex m_sourceRegex = new Regex(@"^<a href=""([^""]+)""(?: rel=""nofollow"")?>(.+)<\/a>$", RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
-        private string m_source;
         [JsonProperty("source")]
-        public string Source
-        {
-            get => this.m_source;
-            set
-            {
-                var m = m_sourceRegex.Match(value);
-                this.m_source = Uri.UnescapeDataString(string.Intern(m.Groups[2].Value));
-                this.SourceUri = Uri.UnescapeDataString(string.Intern(m.Groups[1].Value));
-                if (this.SourceUri.StartsWith("//"))
-                    this.SourceUri = "http:" + this.SourceUri;
-
-                this.m_source = string.Intern(this.m_source);
-                this.SourceUri = string.Intern(this.SourceUri);
-
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Source"));
-            }
-        }
-
-        public string SourceUri { get; private set; }
+        public string Source { get; set; }
 
         //////////////////////////////////////////////////
 
         [JsonProperty("current_user_retweet")]
         public CurrentUserRetweet CurrentUserRetweet { get; set; }
-
-        //////////////////////////////////////////////////
-        
-        public int IsDeleted { get; set; }
-        
-        public int IsRetweetedByMe { get; set; }
-
-        public User DisplayUser => this.RetweetedStatus != null ? this.RetweetedStatus.User : this.User;
-
-        private string m_displayTextOneLine;
-        [DependsOn("Text", "ExtendedTweet")]
-        public string DisplayTextOneLine => this.m_displayTextOneLine ?? (this.m_displayTextOneLine = this.DisplayText.Replace("\r", "").Replace("\n", ""));
-
-        private string m_displayText;
-        [DependsOn("Text", "ExtendedTweet")]
-        public string DisplayText => this.m_displayText ?? (this.m_displayText = this.GetDisplayText());
-
-        private string m_dateTimeAndVia;
-        [DependsOn("CreatedAt", "Source")]
-        public string DateTimeAndVia => this.m_dateTimeAndVia ?? (this.m_dateTimeAndVia = $"{this.CreatedAt.ToString()} / {this.Source}"); //"yyyy-MM-dd HH:mm:ss d"
-
-        [DependsOn("ExtendedTweet")]
-        public bool HasMedia
-        {
-            get
-            {
-                var stat = (this.RetweetedStatus ?? this);
-                return (stat.ExtendedEntities ?? stat.Entities)?.Media?.Length > 0;
-            }
-        }
-
-        [DependsOn("ExtendedTweet")]
-        public string[] Images
-        {
-            get
-            {
-                var stat = (this.RetweetedStatus ?? this);
-                return (stat.ExtendedEntities ?? stat.Entities)?.Media?.Select(e => e.MediaUrl).ToArray();
-            }
-        }
     }
 
     [JsonObject]

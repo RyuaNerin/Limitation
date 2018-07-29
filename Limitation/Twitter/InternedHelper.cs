@@ -2,30 +2,31 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Limitation.Twitter.BaseModel;
+using Limitation.Twitter.Objects;
 
 namespace Limitation.Twitter
 {
-    internal static class Container
+    internal static class InternedHelper
     {
-        private static SortedList<long, WeakReference<User>> UserCollection   = new SortedList<long, WeakReference<User>>(200);
-        private static SortedList<long, WeakReference<Status>> StatusCollection = new SortedList<long, WeakReference<Status>>(1024);
+        private static SortedList<long, WeakReference<UserObject>> UserCollection   = new SortedList<long, WeakReference<UserObject>>(200);
+        private static SortedList<long, WeakReference<StatusObject>> StatusCollection = new SortedList<long, WeakReference<StatusObject>>(1024);
 
-        public static IEnumerable<Status> ToInterned(this IEnumerable<Status> statuses)
+        public static IEnumerable<StatusObject> ToInterned(this IEnumerable<StatusObject> statuses)
         {
             foreach (var item in statuses)
                 yield return item.Intern();
         }
 
-        public static Status Intern(this Status status)
+        public static StatusObject Intern(this StatusObject status)
         {
             bool newItem = false;
-            Status interned;
+            StatusObject interned;
 
             lock (StatusCollection)
             {
                 if (!StatusCollection.ContainsKey(status.Id))
                 {
-                    StatusCollection[status.Id] = new WeakReference<Status>(interned = status);
+                    StatusCollection[status.Id] = new WeakReference<StatusObject>(interned = status);
                     newItem = true;
                 }
                 else
@@ -49,15 +50,15 @@ namespace Limitation.Twitter
             return interned;
         }
 
-        public static User Intern(this User user)
+        public static UserObject Intern(this UserObject user)
         {
-            User interned;
+            UserObject interned;
 
             lock (UserCollection)
             {
                 if (!UserCollection.ContainsKey(user.Id))
                 {
-                    UserCollection[user.Id] = new WeakReference<User>(interned = user);
+                    UserCollection[user.Id] = new WeakReference<UserObject>(interned = user);
                 }
                 else
                 {

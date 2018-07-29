@@ -8,7 +8,7 @@ namespace Limitation.Twitter.BaseModel
     [JsonObject]
     [AddINotifyPropertyChangedInterface]
     [DebuggerDisplay("User {Id} - @{ScreenName}")]
-	internal class User : TwitterObject<User>
+	internal abstract class BaseUser : TwitterObject<BaseUser>
     {
         [JsonProperty("created_at")]
         public DateTime CreatedAt { get; set; }
@@ -60,11 +60,6 @@ namespace Limitation.Twitter.BaseModel
         
         [JsonProperty("verified")]
         public bool Verified { get; set; }
-
-        //////////////////////////////////////////////////
-
-        [DependsOn("ScreenName", "Name")]
-        public string MixedName => $"{this.Name} (@{this.ScreenName})";
     }
 
     [JsonObject]

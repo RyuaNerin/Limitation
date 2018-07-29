@@ -5,6 +5,8 @@ using Limitation.Setting.Objects;
 using Limitation.Twitter.BaseModel;
 using System.Linq;
 using Limitation.Windows.Controls;
+using Limitation.Setting;
+using Limitation.Twitter.Objects;
 
 namespace Limitation.Twitter.TimeLine
 {
@@ -34,7 +36,7 @@ namespace Limitation.Twitter.TimeLine
 
         protected abstract void UpdatePriv();
 
-        protected void Add(IEnumerable<Status> statuses)
+        protected void Add(IEnumerable<StatusObject> statuses)
         {
             statuses = statuses.ToInterned();
 
@@ -51,9 +53,12 @@ namespace Limitation.Twitter.TimeLine
         {
             foreach (var item in statuses)
                 this.TweetObjects.Add(item);
+
+            while (this.TweetObjects.Count > Options.Instance.Design.ViewTweetsLimit)
+                this.TweetObjects.RemoveAt(this.TweetObjects.Count - 1);
         }
 
-        private bool Filter(Status status)
+        private bool Filter(BaseStatus status)
         {
             return true;
             // TO-DO
